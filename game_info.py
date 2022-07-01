@@ -1,29 +1,25 @@
 import time
-# import random
-from typing import List
+# from typing import List
 
-# import card_pile
-# import card_queue
 from card_pile import CardPile
 from card_queue import CardQueue
 from cards import Cards
 
-
 class GameInfo:
-    current_pile: int
-    card_queue: CardQueue
-    card_piles: List[CardPile]
+    # current_pile: int
+    # card_queue: CardQueue
+    # card_piles: List[CardPile]
 
-    # b_auto_play: bool
-    # b_auto_check: bool
-    # b_peep_next_in_queue: bool
-    # b_display_short_pile: bool
-    # b_win_game_only: bool
+    # # b_auto_play: bool
+    # # b_auto_check: bool
+    # # b_peep_next_in_queue: bool
+    # # b_display_short_pile: bool
+    # # b_win_game_only: bool
 
-    b_verbose: bool
+    # b_verbose: bool
 
-    b_win: bool
-    b_done: bool
+    # b_win: bool
+    # b_done: bool
 
     def __init__(self, deck, game):
         self.game = game

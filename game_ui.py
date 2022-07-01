@@ -3,13 +3,9 @@ import re
 import sys
 
 from tkinter import *
-# from tkinter import Tk, Menu, Label, Button, Entry, sys, PhotoImage, Frame, Checkbutton, Canvas
-# from tkinter import N, E, S, self.card_width, SUNKEN, RAISED, NORMAL, DISABLED, NE
-# from tkinter import StringVar, Toplevel, mainloop
-# from tkinter import messagebox
 from tkinter import filedialog
-from turtle import color
-from typing import List, Any
+# from turtle import color
+# from typing import List, Any
 
 # import game_info
 from game_info import GameInfo
@@ -17,23 +13,23 @@ from game_info import GameInfo
 class Game():
     """Implements a game class."""
 
-    pile_label: List[str]
-    deal_label: str
-    hands_label: str
-    queue_label: str
-    peep_next_label: str
+    # pile_label: List[str]
+    # deal_label: str
+    # hands_label: str
+    # queue_label: str
+    # peep_next_label: str
 
-    gif_dir: str
+    # gif_dir: str
 
-    card_img: List[Any]
-    card_check_boxes: List[Any]
+    # card_img: List[Any]
+    # card_check_boxes: List[Any]
 
-    b_auto_play: bool
-    b_auto_check: bool
-    b_peep_next_in_queue: bool
-    b_display_short_pile: bool
-    b_win_game_only: bool
-    b_verbose: bool
+    # b_auto_play: bool
+    # b_auto_check: bool
+    # b_peep_next_in_queue: bool
+    # b_display_short_pile: bool
+    # b_win_game_only: bool
+    # b_verbose: bool
 
     def __init__(self):
 
