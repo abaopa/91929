@@ -50,7 +50,7 @@ class Game():
 
         self.cwd = os.getcwd()
 
-        self.TheGame = GameInfo(None, self)
+        self.TheGame = GameInfo(self, None)
 
         """Instance initialization function."""
 
@@ -311,7 +311,8 @@ class Game():
 
     def load_game_clicked(self):
         thisdir = filedialog.askopenfilename(initialdir=self.cwd, title="Select file",
-                                             filetypes=(("Card files", "*.txt"), ("all files", "*.*")))
+                                             filetypes=(("Card files", "*.txt"), ("all files", "*.*")),
+                                             defaultextension=[("Card files", "*.txt")])
 
         if self.load_file(thisdir):
             self.TheGame.start_game(False)
@@ -320,7 +321,8 @@ class Game():
 
     def save_game_clicked(self):
         thisdir = filedialog.asksaveasfilename(initialdir=self.cwd, title="Select file",
-                                               filetypes=(("Card files", "*.txt"), ("all files", "*.*")))
+                                               filetypes=(("Card files", "*.txt"), ("all files", "*.*")),
+                                               defaultextension=[("Card files", "*.txt")])
 
         self.save_file(thisdir)
 
@@ -346,7 +348,7 @@ class Game():
                 # if len(deck) == 52 and (card for card in deck if 0 <= card <= 51):
                 # if len(deck) == 52 and sorted(deck)==list(range(max(deck)+1)):
                 if len(deck) == 52 and set(deck) == checkset:
-                    # self.TheGame = GameInfo(deck, self)
+                    # self.TheGame = GameInfo(self, deck)
                     # print(self.TheGame.cards.rg_cards)
                     self.TheGame.cards.rg_cards = deck
                     return True
@@ -356,7 +358,7 @@ class Game():
     def save_file(self, thisdir):
         print(thisdir)
 
-        ftext = open(thisdir, 'self.card_width', encoding="utf-8")
+        ftext = open(thisdir, 'w', encoding="utf-8")
         # ftext = sys.stdout
 
         print(self.TheGame.cards.rg_cards, file=ftext)
