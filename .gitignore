@@ -1,0 +1,22 @@
+# Visual Studio files
+.vs/
+__pycache__
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.py_
+
+# Build files
+bin/
+obj/
+Debug/
+Release/
+
+# NuGet packages
+packages/
+
+# Project files
+*.csproj.user
+*.vcxproj.user
+error_log.txt
