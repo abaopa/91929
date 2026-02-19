@@ -802,12 +802,54 @@ class Game():
         self.root.update()
 
     def help_about(self): pass
-    def print_deck(self): pass
-    def print_game_info(self): pass
-    def print_pile(self, pile): pass
-    def print_current_pile(self): pass
-    def print_all_piles(self): pass
-    def print_piles(self, current_pile): pass
-    def print_queue(self): pass
-    def print_peep_next_in_queue(self): pass
-    def print_options(self): pass
+
+    def print_deck(self):
+        print("Deck:", [self.TheGame.cards.rg_card_face[card]
+              for card in self.TheGame.cards.rg_cards])
+
+    def print_game_info(self):
+        if self.b_verbose:
+            print("Total Hands:", self.TheGame.cnt_hands, ", Current Pile:", self.TheGame.current_pile, ", Card Queue:",
+                  self.TheGame.card_queue.n_count)
+
+    def print_pile(self, pile):
+        if self.b_verbose:
+            self.print_one_pile(pile, self.TheGame.current_pile)
+
+    def print_current_pile(self):
+        if self.b_verbose:
+            self.print_pile(self.TheGame.current_pile)
+
+    def print_all_piles(self):
+        if self.b_verbose:
+            for pile in range(0, 4):
+                self.print_pile(pile)
+
+    def print_one_pile(self, pile, current_pile):
+        if self.b_verbose:
+            s_prompt = ">Pile" if pile == current_pile else " Pile"
+            print(s_prompt, pile, ":", len(self.TheGame.card_piles[pile].rg_cards),
+                  [self.TheGame.cards.rg_card_face[card] for card in self.TheGame.card_piles[pile].rg_cards])
+
+    def print_piles(self, current_pile):
+        if self.b_verbose:
+            for pile in range(4):
+                self.print_one_pile(pile, current_pile)
+
+    def print_queue(self):
+        if self.b_verbose:
+            print("CardQ:", self.TheGame.card_queue.n_count,
+                  [self.TheGame.cards.rg_card_face[card] for card in self.TheGame.card_queue.rg_cards])
+            
+    def print_peep_next_in_queue(self):
+        if self.b_verbose and len(self.TheGame.card_queue.rg_cards) > 0:
+            print(self.TheGame.cards.rg_card_face[self.TheGame.card_queue.rg_cards[0]])
+
+    def print_options(self):
+        if self.b_verbose:
+            print("Assistant Alert:", self.b_auto_check)
+            print("Auto Run:", self.b_auto_play)
+            print("Peep Next In Queue:", self.b_peep_next_in_queue)
+            print("Play Win Only Hand:", self.b_win_game_only)
+            print("Display Short List:", self.b_display_short_pile)
+            print("Display Detail Info:", self.b_verbose)
