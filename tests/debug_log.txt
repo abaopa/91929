@@ -1,0 +1,953 @@
+Log Start
+1770640579.2649503: Main started
+1770640579.2652411: Init Adapter
+1770640579.265819: Building Grid
+1770640579.2666109: Building Controls
+1770640579.275172: Adding to Page
+1770640579.2780747: Starting Game
+1770640579.2783818: render_cards started
+1770640579.2860532: Startup Done
+1770640582.9100716: render_cards started
+1770640584.7611275: Auto-Play thread started
+1770640584.7619464: Auto-Play: No moves, dealing one card
+1770640584.7624574: render_cards started
+1770640585.077226: Auto-Play: No moves, dealing one card
+1770640585.077693: render_cards started
+1770640585.3894417: Auto-Play: No moves, dealing one card
+1770640585.3901553: render_cards started
+1770640585.7011683: Auto-Play: No moves, dealing one card
+1770640585.7018418: render_cards started
+1770640586.0149324: Auto-Play: No moves, dealing one card
+1770640586.0155854: render_cards started
+1770640586.3265526: Auto-Play: No moves, dealing one card
+1770640586.3269482: render_cards started
+1770640586.638027: Auto-Play: No moves, dealing one card
+1770640586.6389189: render_cards started
+1770640586.9504967: Auto-Play: No moves, dealing one card
+1770640586.9510865: render_cards started
+1770640587.2638454: Auto-Play: No moves, dealing one card
+1770640587.2644484: render_cards started
+1770640587.576708: Auto-Play: No moves, dealing one card
+1770640587.5771232: render_cards started
+1770640587.8881671: Auto-Play: No moves, dealing one card
+1770640587.8886204: render_cards started
+1770640588.2004983: Auto-Play: No moves, dealing one card
+1770640588.201343: render_cards started
+1770640588.5143726: Auto-Play: Collected from pile 0
+1770640588.5148778: render_cards started
+1770640588.827781: Auto-Play: No moves, dealing one card
+1770640588.8285632: render_cards started
+1770640589.140939: Auto-Play: No moves, dealing one card
+1770640589.1416416: render_cards started
+1770640589.454437: Auto-Play: Collected from pile 2
+1770640589.4551375: render_cards started
+1770640589.7662976: Auto-Play: No moves, dealing one card
+1770640589.767053: render_cards started
+1770640590.079965: Auto-Play: Collected from pile 3
+1770640590.0804677: render_cards started
+1770640590.3920872: Auto-Play: No moves, dealing one card
+1770640590.3929472: render_cards started
+1770640590.7039294: Auto-Play: No moves, dealing one card
+1770640590.7051926: render_cards started
+1770640591.0170822: Auto-Play: No moves, dealing one card
+1770640591.017921: render_cards started
+1770640591.331807: Auto-Play: No moves, dealing one card
+1770640591.3324945: render_cards started
+1770640591.6452143: Auto-Play: No moves, dealing one card
+1770640591.6455972: render_cards started
+1770640591.9578085: Auto-Play: No moves, dealing one card
+1770640591.9583964: render_cards started
+1770640592.2708545: Auto-Play: Collected from pile 1
+1770640592.271591: render_cards started
+1770640592.5833247: Auto-Play: No moves, dealing one card
+1770640592.5840383: render_cards started
+1770640592.8978112: Auto-Play: No moves, dealing one card
+1770640592.898555: render_cards started
+1770640593.2125652: Auto-Play: No moves, dealing one card
+1770640593.2129705: render_cards started
+1770640593.5253384: Auto-Play: No moves, dealing one card
+1770640593.5258925: render_cards started
+1770640593.8399959: Auto-Play: Collected from pile 1
+1770640593.8405795: render_cards started
+1770640594.1525686: Auto-Play: No moves, dealing one card
+1770640594.153027: render_cards started
+1770640594.4662356: Auto-Play: Collected from pile 2
+1770640594.466822: render_cards started
+1770640594.7786107: Auto-Play: No moves, dealing one card
+1770640594.7794654: render_cards started
+1770640595.0914698: Auto-Play: No moves, dealing one card
+1770640595.091952: render_cards started
+1770640595.40405: Auto-Play: No moves, dealing one card
+1770640595.4046028: render_cards started
+1770640595.7168984: Auto-Play: No moves, dealing one card
+1770640595.7173653: render_cards started
+1770640596.0311623: Auto-Play: No moves, dealing one card
+1770640596.0319057: render_cards started
+1770640596.3458757: Auto-Play: No moves, dealing one card
+1770640596.3463595: render_cards started
+1770640596.6596699: Auto-Play: No moves, dealing one card
+1770640596.6602397: render_cards started
+1770640596.9741902: Auto-Play: No moves, dealing one card
+1770640596.9752: render_cards started
+1770640597.2896996: Auto-Play: Collected from pile 2
+1770640597.2904735: render_cards started
+1770640597.6071577: Auto-Play: No moves, dealing one card
+1770640597.607781: render_cards started
+1770640597.9213922: Auto-Play: No moves, dealing one card
+1770640597.9222617: render_cards started
+1770640598.2362819: Auto-Play: No moves, dealing one card
+1770640598.2369764: render_cards started
+1770640598.5524566: Auto-Play: No moves, dealing one card
+1770640598.5532863: render_cards started
+1770640598.869287: Auto-Play: Collected from pile 3
+1770640598.8702629: render_cards started
+1770640599.1856763: Auto-Play: Collected from pile 3
+1770640599.1865408: render_cards started
+1770640599.5014782: Auto-Play: No moves, dealing one card
+1770640599.5019941: render_cards started
+1770640599.8158133: Auto-Play: Collected from pile 0
+1770640599.8162162: render_cards started
+1770640600.1314912: Auto-Play: No moves, dealing one card
+1770640600.1322818: render_cards started
+1770640600.4456253: Auto-Play: No moves, dealing one card
+1770640600.4463248: render_cards started
+1770640600.760018: Auto-Play: No moves, dealing one card
+1770640600.7606268: render_cards started
+1770640601.0749104: Auto-Play: No moves, dealing one card
+1770640601.0756483: render_cards started
+1770640601.3916686: Auto-Play: No moves, dealing one card
+1770640601.392104: render_cards started
+1770640601.7074304: Auto-Play: No moves, dealing one card
+1770640601.70813: render_cards started
+1770640602.0242677: Auto-Play: No moves, dealing one card
+1770640602.0247498: render_cards started
+1770640602.3405266: Auto-Play: No moves, dealing one card
+1770640602.3411508: render_cards started
+1770640602.6587198: Auto-Play: No moves, dealing one card
+1770640602.659202: render_cards started
+1770640602.975449: Auto-Play: No moves, dealing one card
+1770640602.9760187: render_cards started
+1770640603.293049: Auto-Play: No moves, dealing one card
+1770640603.2935529: render_cards started
+1770640603.6125052: Auto-Play: No moves, dealing one card
+1770640603.613167: render_cards started
+1770640603.9299495: Auto-Play: Collected from pile 0
+1770640603.9307253: render_cards started
+1770640604.2472804: Auto-Play: Collected from pile 0
+1770640604.2477808: render_cards started
+1770640604.5628223: Auto-Play: No moves, dealing one card
+1770640604.563766: render_cards started
+1770640604.879199: Auto-Play: No moves, dealing one card
+1770640604.8800385: render_cards started
+1770640605.1962368: Auto-Play: Collected from pile 3
+1770640605.1969655: render_cards started
+1770640605.5122323: Auto-Play: No moves, dealing one card
+1770640605.5130124: render_cards started
+1770640605.8295915: Auto-Play: Collected from pile 0
+1770640605.829921: render_cards started
+1770640606.144408: Auto-Play: No moves, dealing one card
+1770640606.1449769: render_cards started
+1770640606.4594924: Auto-Play: No moves, dealing one card
+1770640606.4602742: render_cards started
+1770640606.7762039: Auto-Play: No moves, dealing one card
+1770640606.7765858: render_cards started
+1770640607.092277: Auto-Play: No moves, dealing one card
+1770640607.0927925: render_cards started
+1770640607.4096305: Auto-Play: No moves, dealing one card
+1770640607.4105902: render_cards started
+1770640607.7282095: Auto-Play: No moves, dealing one card
+1770640607.7290413: render_cards started
+1770640608.0453243: Auto-Play: No moves, dealing one card
+1770640608.0457168: render_cards started
+1770640608.363145: Auto-Play: Collected from pile 1
+1770640608.3635802: render_cards started
+1770640608.6797583: Auto-Play: No moves, dealing one card
+1770640608.6802955: render_cards started
+1770640608.9966233: Auto-Play: Collected from pile 3
+1770640608.9972: render_cards started
+1770640609.3157456: Auto-Play: No moves, dealing one card
+1770640609.3162596: render_cards started
+1770640609.6317208: Auto-Play: Collected from pile 0
+1770640609.6321664: render_cards started
+1770640609.94704: Auto-Play: No moves, dealing one card
+1770640609.9478972: render_cards started
+1770640610.2640798: Auto-Play: No moves, dealing one card
+1770640610.2648346: render_cards started
+1770640610.580294: Auto-Play: No moves, dealing one card
+1770640610.580995: render_cards started
+1770640610.8971105: Auto-Play: No moves, dealing one card
+1770640610.897598: render_cards started
+1770640610.8988304: Error in render_cards: An attempt to fetch destroyed session.
+1770640616.150563: render_cards started
+1770640616.9990268: render_cards started
+1770640618.3411448: render_cards started
+1770640618.5669458: render_cards started
+1770640618.7623644: render_cards started
+1770640619.018063: render_cards started
+1770640619.2338293: render_cards started
+1770643037.49691: Auto-Play thread started
+1770643037.5074172: Auto-Play: No moves, dealing one card
+1770643037.8158116: Auto-Play: No moves, dealing one card
+1770643038.1263533: Auto-Play: No moves, dealing one card
+1770643038.4365828: Auto-Play: No moves, dealing one card
+1770643038.7462876: Auto-Play: No moves, dealing one card
+1770643039.0571465: Auto-Play: No moves, dealing one card
+1770643039.3667903: Auto-Play: No moves, dealing one card
+1770643039.6787484: Auto-Play: No moves, dealing one card
+1770643039.9898088: Auto-Play: No moves, dealing one card
+1770643040.3014143: Auto-Play: No moves, dealing one card
+1770643040.6135244: Auto-Play: No moves, dealing one card
+1770643040.9266667: Auto-Play: No moves, dealing one card
+1770643041.2392704: Auto-Play: No moves, dealing one card
+1770643041.5523987: Auto-Play: No moves, dealing one card
+1770643041.8651009: Auto-Play: No moves, dealing one card
+1770643042.1717675: Auto-Play: Collected from pile 2
+1770643042.484678: Auto-Play: No moves, dealing one card
+1770643042.7998753: Auto-Play: No moves, dealing one card
+1770643043.1126304: Auto-Play: No moves, dealing one card
+1770643043.4266803: Auto-Play: No moves, dealing one card
+1770643043.7411275: Auto-Play: No moves, dealing one card
+1770643044.0570366: Auto-Play: No moves, dealing one card
+1770643044.3723063: Auto-Play: Collected from pile 0
+1770643044.6864665: Auto-Play: No moves, dealing one card
+1770643044.99985: Auto-Play: No moves, dealing one card
+1770643045.3137538: Auto-Play: No moves, dealing one card
+1770643045.628546: Auto-Play: No moves, dealing one card
+1770643045.944583: Auto-Play: No moves, dealing one card
+1770643046.2598088: Auto-Play: Collected from pile 1
+1770643046.5754898: Auto-Play: No moves, dealing one card
+1770643046.8893788: Auto-Play: Collected from pile 2
+1770643047.2039106: Auto-Play: No moves, dealing one card
+1770643047.517184: Auto-Play: Collected from pile 3
+1770643047.8276916: Auto-Play: No moves, dealing one card
+1770643048.1411822: Auto-Play: No moves, dealing one card
+1770643048.4537585: Auto-Play: No moves, dealing one card
+1770643048.7693608: Auto-Play: No moves, dealing one card
+1770643049.0830455: Auto-Play: No moves, dealing one card
+1770643049.3964744: Auto-Play: No moves, dealing one card
+1770643049.7106504: Auto-Play: No moves, dealing one card
+1770643050.0269957: Auto-Play: No moves, dealing one card
+1770643050.3444517: Auto-Play: Collected from pile 3
+1770643050.6596422: Auto-Play: No moves, dealing one card
+1770643050.97514: Auto-Play: No moves, dealing one card
+1770643051.2913845: Auto-Play: No moves, dealing one card
+1770643051.6072621: Auto-Play: No moves, dealing one card
+1770643051.925917: Auto-Play: No moves, dealing one card
+1770643052.2435434: Auto-Play: No moves, dealing one card
+1770643052.562778: Auto-Play: No moves, dealing one card
+1770643052.8813076: Auto-Play: No moves, dealing one card
+1770643053.2007623: Auto-Play: No moves, dealing one card
+1770643053.5201921: Auto-Play: No moves, dealing one card
+1770643053.8402517: Auto-Play: Collected from pile 1
+1770643054.1575744: Auto-Play: No moves, dealing one card
+1770643054.4778562: Auto-Play: Collected from pile 2
+1770643054.7954848: Auto-Play: No moves, dealing one card
+1770643055.1148317: Auto-Play: Collected from pile 3
+1770643055.4324055: Auto-Play: No moves, dealing one card
+1770643055.7514014: Auto-Play: No moves, dealing one card
+1770643056.0685365: Auto-Play: No moves, dealing one card
+1770643056.3883457: Auto-Play: No moves, dealing one card
+1770643056.7066202: Auto-Play: No moves, dealing one card
+1770643057.0252888: Auto-Play: No moves, dealing one card
+1770643057.3431523: Auto-Play: Collected from pile 1
+1770643057.6598284: Auto-Play: Collected from pile 1
+1770643057.9758272: Auto-Play: No moves, dealing one card
+1770643058.2929394: Auto-Play: Collected from pile 2
+1770643058.6088076: Auto-Play: No moves, dealing one card
+1770643058.9275641: Auto-Play: Collected from pile 3
+1770643059.243971: Auto-Play: No moves, dealing one card
+1770643059.5584147: Auto-Play: No moves, dealing one card
+1770643059.8738618: Auto-Play: No moves, dealing one card
+1770643060.189124: Auto-Play: No moves, dealing one card
+1770643060.5057042: Auto-Play: No moves, dealing one card
+1770643060.8228836: Auto-Play: No moves, dealing one card
+1770643061.1388812: Auto-Play: No moves, dealing one card
+1770643061.455886: Auto-Play: No moves, dealing one card
+1770643061.773953: Auto-Play: No moves, dealing one card
+1770643062.0915549: Auto-Play: No moves, dealing one card
+1770643062.4097633: Auto-Play: No moves, dealing one card
+1770643062.7287598: Auto-Play: No moves, dealing one card
+1770643063.0474634: Auto-Play: No moves, dealing one card
+1770643063.3688488: Auto-Play: No moves, dealing one card
+1770643063.6882455: Auto-Play: Collected from pile 1
+1770643064.0084336: Auto-Play: No moves, dealing one card
+1770643064.3287742: Auto-Play: Collected from pile 2
+1770643064.6466088: Auto-Play: No moves, dealing one card
+1770643064.9646292: Auto-Play: No moves, dealing one card
+1770643065.2848284: Auto-Play: No moves, dealing one card
+1770643065.6027663: Auto-Play: Collected from pile 1
+1770643065.920326: Auto-Play: No moves, dealing one card
+1770643066.2335346: Auto-Play: No moves, dealing one card
+1770643066.5540318: Auto-Play: No moves, dealing one card
+1770643066.8735282: Auto-Play: No moves, dealing one card
+1770643067.191771: Auto-Play: No moves, dealing one card
+1770643067.509478: Auto-Play: Collected from pile 2
+1770643067.8288374: Auto-Play: No moves, dealing one card
+1770643068.146102: Auto-Play: Collected from pile 3
+1770643068.4634054: Auto-Play: No moves, dealing one card
+1770643068.7799356: Auto-Play: Collected from pile 0
+1770643069.096933: Auto-Play: No moves, dealing one card
+1770643069.4139369: Auto-Play: No moves, dealing one card
+1770643069.7308707: Auto-Play: No moves, dealing one card
+1770643070.0498612: Auto-Play: No moves, dealing one card
+1770643070.3680882: Auto-Play: Collected from pile 0
+1770643070.6857061: Auto-Play: No moves, dealing one card
+1770643071.0043113: Auto-Play: No moves, dealing one card
+1770643071.3218586: Auto-Play: Collected from pile 2
+1770643071.6410022: Auto-Play: No moves, dealing one card
+1770643071.9605634: Auto-Play: No moves, dealing one card
+1770643072.2779534: Auto-Play: Collected from pile 0
+1770643072.5947936: Auto-Play: No moves, dealing one card
+1770643072.9157264: Auto-Play: No moves, dealing one card
+1770643073.2343938: Auto-Play: No moves, dealing one card
+1770643073.5524485: Auto-Play: No moves, dealing one card
+1770643073.8719373: Auto-Play: Collected from pile 0
+1770643074.190416: Auto-Play: No moves, dealing one card
+1770643074.500574: Auto-Play: Collected from pile 1
+1770643074.820446: Auto-Play: No moves, dealing one card
+1770643075.1376362: Auto-Play: No moves, dealing one card
+1770643075.454588: Auto-Play: No moves, dealing one card
+1770643075.7738261: Auto-Play: Collected from pile 0
+1770643076.0907671: Auto-Play: No moves, dealing one card
+1770643076.4086938: Auto-Play: No moves, dealing one card
+1770643076.7280726: Auto-Play: No moves, dealing one card
+1770643077.0476117: Auto-Play: No moves, dealing one card
+1770643077.365594: Auto-Play: No moves, dealing one card
+1770643077.6854653: Auto-Play: No moves, dealing one card
+1770643078.005987: Auto-Play: No moves, dealing one card
+1770643078.3267295: Auto-Play: No moves, dealing one card
+1770643078.6461575: Auto-Play: Collected from pile 0
+1770643078.9646556: Auto-Play: No moves, dealing one card
+1770643079.2850597: Auto-Play: Collected from pile 1
+1770643079.606293: Auto-Play: No moves, dealing one card
+1770643079.923567: Auto-Play: No moves, dealing one card
+1770643080.2426906: Auto-Play: Collected from pile 3
+1770643080.5618215: Auto-Play: No moves, dealing one card
+1770643080.881053: Auto-Play: Collected from pile 0
+1770643081.1997476: Auto-Play: Collected from pile 0
+1770643081.5162058: Auto-Play: No moves, dealing one card
+1770643081.833188: Auto-Play: No moves, dealing one card
+1770643082.1503754: Auto-Play: Collected from pile 2
+1770643082.4659655: Auto-Play: No moves, dealing one card
+1770643082.7832968: Auto-Play: Collected from pile 3
+1770643083.1010866: Auto-Play: No moves, dealing one card
+1770643083.4091704: Auto-Play: No moves, dealing one card
+1770643083.725487: Auto-Play: Collected from pile 1
+1770643084.0402045: Auto-Play: No moves, dealing one card
+1770643084.3569925: Auto-Play: Collected from pile 2
+1770643084.6711214: Auto-Play: No moves, dealing one card
+1770643084.9849381: Auto-Play: Collected from pile 3
+1770643085.298881: Auto-Play: No moves, dealing one card
+1770643085.6114159: Auto-Play: No moves, dealing one card
+1770643085.9265647: Auto-Play: No moves, dealing one card
+1770643086.2394104: Auto-Play: No moves, dealing one card
+1770643086.5539968: Auto-Play: No moves, dealing one card
+1770643086.869618: Auto-Play: Collected from pile 0
+1770643087.1828012: Auto-Play: No moves, dealing one card
+1770643087.4978433: Auto-Play: No moves, dealing one card
+1770643087.813389: Auto-Play: No moves, dealing one card
+1770643088.1306715: Auto-Play: No moves, dealing one card
+1770643088.4448519: Auto-Play: No moves, dealing one card
+1770643088.759427: Auto-Play: Collected from pile 1
+1770643089.0733104: Auto-Play: No moves, dealing one card
+1770643089.3901951: Auto-Play: No moves, dealing one card
+1770643089.7054503: Auto-Play: Collected from pile 3
+1770643090.0198684: Auto-Play: No moves, dealing one card
+1770643090.3346727: Auto-Play: No moves, dealing one card
+1770643090.6488879: Auto-Play: No moves, dealing one card
+1770643090.9639134: Auto-Play: No moves, dealing one card
+1770643091.2801564: Auto-Play: No moves, dealing one card
+1770643091.5956264: Auto-Play: No moves, dealing one card
+1770643091.9118533: Auto-Play: Collected from pile 1
+1770643092.228781: Auto-Play: No moves, dealing one card
+1770643092.544985: Auto-Play: No moves, dealing one card
+1770643092.8617625: Auto-Play: No moves, dealing one card
+1770643093.178124: Auto-Play: No moves, dealing one card
+1770643093.4949634: Auto-Play: No moves, dealing one card
+1770643093.81264: Auto-Play: No moves, dealing one card
+1770643094.131678: Auto-Play: No moves, dealing one card
+1770643094.4511976: Auto-Play: No moves, dealing one card
+1770643094.770256: Auto-Play: No moves, dealing one card
+1770643095.0903141: Auto-Play: No moves, dealing one card
+1770643095.4093184: Auto-Play: No moves, dealing one card
+1770643095.7314148: Auto-Play: No moves, dealing one card
+1770643096.0506444: Auto-Play: No moves, dealing one card
+1770643096.3770366: Auto-Play: No moves, dealing one card
+1770643096.7024868: Auto-Play: No moves, dealing one card
+1770643097.0236592: Auto-Play: No moves, dealing one card
+1770643097.3462698: Auto-Play: No moves, dealing one card
+1770643097.6690958: Auto-Play: No moves, dealing one card
+1770643097.9900637: Auto-Play: No moves, dealing one card
+1770643098.3139718: Auto-Play: No moves, dealing one card
+1770643098.6365974: Auto-Play: No moves, dealing one card
+1770643098.9610245: Auto-Play: Collected from pile 2
+1770643099.2837102: Auto-Play: No moves, dealing one card
+1770643099.6095564: Auto-Play: No moves, dealing one card
+1770643099.9334288: Auto-Play: Collected from pile 0
+1770643100.253542: Auto-Play: No moves, dealing one card
+1770643100.5798802: Auto-Play: No moves, dealing one card
+1770643100.9036746: Auto-Play: No moves, dealing one card
+1770643101.2281551: Auto-Play: No moves, dealing one card
+1770643101.550113: Auto-Play: No moves, dealing one card
+1770643101.8733113: Auto-Play: No moves, dealing one card
+1770643101.8965971: Auto-Play: Game done (Win: False)
+1770643101.9070647: Auto-Play thread stopping
+1770643231.823629: Auto-Play thread started
+1770643231.8360553: Auto-Play: No moves, dealing one card
+1770643232.4485326: Auto-Play: No moves, dealing one card
+1770643233.0594747: Auto-Play: No moves, dealing one card
+1770643233.6706178: Auto-Play: No moves, dealing one card
+1770643234.280302: Auto-Play: No moves, dealing one card
+1770643234.8904254: Auto-Play: No moves, dealing one card
+1770643235.500976: Auto-Play: No moves, dealing one card
+1770643236.11254: Auto-Play: No moves, dealing one card
+1770643236.7231693: Auto-Play: No moves, dealing one card
+1770643237.334218: Auto-Play: No moves, dealing one card
+1770643237.9460852: Auto-Play: No moves, dealing one card
+1770643238.5594573: Auto-Play: No moves, dealing one card
+1770643239.1713977: Auto-Play: No moves, dealing one card
+1770643239.7847633: Auto-Play: No moves, dealing one card
+1770643240.3981643: Auto-Play: No moves, dealing one card
+1770643241.0122793: Auto-Play: Collected from pile 2
+1770643241.6248782: Auto-Play: No moves, dealing one card
+1770643242.2368193: Auto-Play: No moves, dealing one card
+1770643242.8508391: Auto-Play: No moves, dealing one card
+1770643243.4650085: Auto-Play: No moves, dealing one card
+1770643244.0789099: Auto-Play: No moves, dealing one card
+1770643244.6936588: Auto-Play: No moves, dealing one card
+1770643245.3094523: Auto-Play: Collected from pile 0
+1770643245.9229589: Auto-Play: No moves, dealing one card
+1770643246.5360425: Auto-Play: No moves, dealing one card
+1770643247.1515763: Auto-Play: No moves, dealing one card
+1770643247.765725: Auto-Play: No moves, dealing one card
+1770643248.3830247: Auto-Play: No moves, dealing one card
+1770643249.0005777: Auto-Play: No moves, dealing one card
+1770643249.617722: Auto-Play: No moves, dealing one card
+1770643250.2333717: Auto-Play: Collected from pile 3
+1770643250.8485067: Auto-Play: No moves, dealing one card
+1770643251.4640808: Auto-Play: No moves, dealing one card
+1770643252.0798452: Auto-Play: Collected from pile 1
+1770643252.6940918: Auto-Play: Collected from pile 1
+1770643253.307898: Auto-Play: No moves, dealing one card
+1770643253.921614: Auto-Play: No moves, dealing one card
+1770643254.5361426: Auto-Play: Collected from pile 3
+1770643255.1502154: Auto-Play: No moves, dealing one card
+1770643255.7649343: Auto-Play: No moves, dealing one card
+1770643256.3807724: Auto-Play: Collected from pile 1
+1770643256.996179: Auto-Play: No moves, dealing one card
+1770643257.6103966: Auto-Play: No moves, dealing one card
+1770643258.2265723: Auto-Play: Collected from pile 3
+1770643258.840775: Auto-Play: No moves, dealing one card
+1770643259.4567034: Auto-Play: No moves, dealing one card
+1770643260.0715873: Auto-Play: No moves, dealing one card
+1770643260.6860266: Auto-Play: No moves, dealing one card
+1770643261.30038: Auto-Play: No moves, dealing one card
+1770643261.9113705: Auto-Play: No moves, dealing one card
+1770643262.5264895: Auto-Play: No moves, dealing one card
+1770643263.1440575: Auto-Play: Collected from pile 2
+1770643263.7561047: Auto-Play: No moves, dealing one card
+1770643264.3730292: Auto-Play: No moves, dealing one card
+1770643264.9875288: Auto-Play: Collected from pile 0
+1770643265.603974: Auto-Play: No moves, dealing one card
+1770643266.2190971: Auto-Play: No moves, dealing one card
+1770643266.8362591: Auto-Play: No moves, dealing one card
+1770643267.4507146: Auto-Play: No moves, dealing one card
+1770643268.067654: Auto-Play: No moves, dealing one card
+1770643268.6835964: Auto-Play: Collected from pile 1
+1770643269.2993014: Auto-Play: No moves, dealing one card
+1770643269.9154675: Auto-Play: No moves, dealing one card
+1770643270.5327735: Auto-Play: No moves, dealing one card
+1770643271.1491048: Auto-Play: No moves, dealing one card
+1770643271.7655869: Auto-Play: No moves, dealing one card
+1770643272.3818228: Auto-Play: No moves, dealing one card
+1770643272.999479: Auto-Play: No moves, dealing one card
+1770643273.6171525: Auto-Play: No moves, dealing one card
+1770643274.232836: Auto-Play: No moves, dealing one card
+1770643274.8484569: Auto-Play: No moves, dealing one card
+1770643275.4698608: Auto-Play: No moves, dealing one card
+1770643276.0896454: Auto-Play: No moves, dealing one card
+1770643276.7120824: Auto-Play: No moves, dealing one card
+1770643277.3316572: Auto-Play: No moves, dealing one card
+1770643277.953571: Auto-Play: No moves, dealing one card
+1770643278.5677934: Auto-Play: No moves, dealing one card
+1770643279.1915047: Auto-Play: No moves, dealing one card
+1770643279.8129203: Auto-Play: No moves, dealing one card
+1770643280.4346204: Auto-Play: No moves, dealing one card
+1770643281.0553522: Auto-Play: Collected from pile 0
+1770643281.6779985: Auto-Play: No moves, dealing one card
+1770643282.294034: Auto-Play: No moves, dealing one card
+1770643282.9139562: Auto-Play: No moves, dealing one card
+1770643283.537477: Auto-Play: Collected from pile 3
+1770643284.1592214: Auto-Play: No moves, dealing one card
+1770643284.7816575: Auto-Play: No moves, dealing one card
+1770643285.4024863: Auto-Play: No moves, dealing one card
+1770643286.0211592: Auto-Play: No moves, dealing one card
+1770643286.6460252: Auto-Play: No moves, dealing one card
+1770643287.2691607: Auto-Play: Collected from pile 0
+1770643287.8932781: Auto-Play: No moves, dealing one card
+1770643288.5177462: Auto-Play: Collected from pile 1
+1770643289.1314895: Auto-Play: No moves, dealing one card
+1770643289.7517805: Auto-Play: Collected from pile 2
+1770643290.3747628: Auto-Play: No moves, dealing one card
+1770643290.9930897: Auto-Play: Collected from pile 3
+1770643291.6127093: Auto-Play: No moves, dealing one card
+1770643292.2334673: Auto-Play: No moves, dealing one card
+1770643292.8559227: Auto-Play: No moves, dealing one card
+1770643293.4681747: Auto-Play: No moves, dealing one card
+1770643294.0879638: Auto-Play: No moves, dealing one card
+1770643294.710583: Auto-Play: No moves, dealing one card
+1770643295.336052: Auto-Play: No moves, dealing one card
+1770643295.9582071: Auto-Play: No moves, dealing one card
+1770643296.5810401: Auto-Play: No moves, dealing one card
+1770643297.2045786: Auto-Play: Collected from pile 0
+1770643297.8264942: Auto-Play: No moves, dealing one card
+1770643298.449869: Auto-Play: No moves, dealing one card
+1770643299.0743952: Auto-Play: No moves, dealing one card
+1770643299.6945238: Auto-Play: No moves, dealing one card
+1770643300.3156385: Auto-Play: No moves, dealing one card
+1770643300.939785: Auto-Play: Game done (Win: False)
+1770643300.9666944: Auto-Play thread stopping
+1770643466.6192014: Auto-Play thread started
+1770643466.6286619: Auto-Play: No moves, dealing one card
+1770643467.2380073: Auto-Play: No moves, dealing one card
+1770643467.8488228: Auto-Play: No moves, dealing one card
+1770643468.4594307: Auto-Play: No moves, dealing one card
+1770643469.0702748: Auto-Play: No moves, dealing one card
+1770643469.681504: Auto-Play: No moves, dealing one card
+1770643470.2915702: Auto-Play: No moves, dealing one card
+1770643470.9026048: Auto-Play: No moves, dealing one card
+1770643471.513677: Auto-Play: No moves, dealing one card
+1770643472.125865: Auto-Play: No moves, dealing one card
+1770643472.737375: Auto-Play: No moves, dealing one card
+1770643473.3474224: Auto-Play: No moves, dealing one card
+1770643473.9598646: Auto-Play: No moves, dealing one card
+1770643474.5722678: Auto-Play: No moves, dealing one card
+1770643475.1852987: Auto-Play: No moves, dealing one card
+1770643475.8001966: Auto-Play: Collected from pile 2 in 15
+1770643476.414214: Auto-Play: No moves, dealing one card
+1770643477.0277343: Auto-Play: Collected from pile 3 in 16
+1770643477.6400144: Auto-Play: No moves, dealing one card
+1770643478.253325: Auto-Play: No moves, dealing one card
+1770643478.8588693: Auto-Play: No moves, dealing one card
+1770643479.4719944: Auto-Play: No moves, dealing one card
+1770643480.0844414: Auto-Play: No moves, dealing one card
+1770643480.6975427: Auto-Play: No moves, dealing one card
+1770643481.311993: Auto-Play: Collected from pile 1 in 22
+1770643481.9257874: Auto-Play: No moves, dealing one card
+1770643482.53914: Auto-Play: No moves, dealing one card
+1770643483.1537821: Auto-Play: No moves, dealing one card
+1770643483.769298: Auto-Play: No moves, dealing one card
+1770643484.3830857: Auto-Play: No moves, dealing one card
+1770643484.9993756: Auto-Play: No moves, dealing one card
+1770643485.6170552: Auto-Play: No moves, dealing one card
+1770643486.2319596: Auto-Play: No moves, dealing one card
+1770643486.848775: Auto-Play: No moves, dealing one card
+1770643487.4645722: Auto-Play: No moves, dealing one card
+1770643488.0806177: Auto-Play: No moves, dealing one card
+1770643488.698028: Auto-Play: Collected from pile 0 in 33
+1770643489.3150995: Auto-Play: No moves, dealing one card
+1770643489.932605: Auto-Play: No moves, dealing one card
+1770643490.5505598: Auto-Play: Collected from pile 2 in 35
+1770643491.1664584: Auto-Play: No moves, dealing one card
+1770643491.7850695: Auto-Play: No moves, dealing one card
+1770643492.40251: Auto-Play: No moves, dealing one card
+1770643493.0213807: Auto-Play: No moves, dealing one card
+1770643493.6391773: Auto-Play: Collected from pile 2 in 39
+1770643494.2555563: Auto-Play: No moves, dealing one card
+1770643494.87196: Auto-Play: Collected from pile 3 in 40
+1770643495.4870892: Auto-Play: No moves, dealing one card
+1770643496.102898: Auto-Play: No moves, dealing one card
+1770643496.7205665: Auto-Play: No moves, dealing one card
+1770643497.3384256: Auto-Play: No moves, dealing one card
+1770643497.957131: Auto-Play: No moves, dealing one card
+1770643498.574212: Auto-Play: No moves, dealing one card
+1770643499.1918266: Auto-Play: No moves, dealing one card
+1770643499.81084: Auto-Play: No moves, dealing one card
+1770643500.4297726: Auto-Play: No moves, dealing one card
+1770643501.048416: Auto-Play: No moves, dealing one card
+1770643501.6696885: Auto-Play: Collected from pile 1 in 50
+1770643502.2897816: Auto-Play: No moves, dealing one card
+1770643502.9081175: Auto-Play: No moves, dealing one card
+1770643503.5282125: Auto-Play: No moves, dealing one card
+1770643504.1496828: Auto-Play: No moves, dealing one card
+1770643504.770856: Auto-Play: No moves, dealing one card
+1770643505.3915944: Auto-Play: No moves, dealing one card
+1770643506.0123973: Auto-Play: Collected from pile 3 in 56
+1770643506.6334512: Auto-Play: No moves, dealing one card
+1770643507.2554648: Auto-Play: No moves, dealing one card
+1770643507.8758698: Auto-Play: Collected from pile 1 in 58
+1770643508.4950104: Auto-Play: No moves, dealing one card
+1770643509.1174145: Auto-Play: Collected from pile 2 in 59
+1770643509.7372227: Auto-Play: No moves, dealing one card
+1770643510.3576589: Auto-Play: No moves, dealing one card
+1770643510.9763722: Auto-Play: No moves, dealing one card
+1770643511.5961616: Auto-Play: No moves, dealing one card
+1770643512.217806: Auto-Play: Collected from pile 2 in 63
+1770643512.8366494: Auto-Play: No moves, dealing one card
+1770643513.4564264: Auto-Play: No moves, dealing one card
+1770643514.0753965: Auto-Play: Collected from pile 0 in 65
+1770643514.6955287: Auto-Play: No moves, dealing one card
+1770643515.315937: Auto-Play: Collected from pile 1 in 66
+1770643515.9343219: Auto-Play: No moves, dealing one card
+1770643516.5552337: Auto-Play: No moves, dealing one card
+1770643517.172203: Auto-Play: Collected from pile 3 in 68
+1770643517.7912483: Auto-Play: No moves, dealing one card
+1770643518.4112923: Auto-Play: No moves, dealing one card
+1770643519.028481: Auto-Play: No moves, dealing one card
+1770643519.6462204: Auto-Play: No moves, dealing one card
+1770643520.2660937: Auto-Play: No moves, dealing one card
+1770643520.8863916: Auto-Play: Collected from pile 0 in 73
+1770643521.503601: Auto-Play: No moves, dealing one card
+1770643522.1221597: Auto-Play: No moves, dealing one card
+1770643522.7326736: Auto-Play: Collected from pile 2 in 75
+1770643523.3495722: Auto-Play: No moves, dealing one card
+1770643523.9691565: Auto-Play: No moves, dealing one card
+1770643524.5874076: Auto-Play: No moves, dealing one card
+1770643525.2081378: Auto-Play: No moves, dealing one card
+1770643525.8273022: Auto-Play: No moves, dealing one card
+1770643526.448537: Auto-Play: Collected from pile 3 in 80
+1770643527.0764241: Auto-Play: No moves, dealing one card
+1770643527.6937108: Auto-Play: No moves, dealing one card
+1770643528.31257: Auto-Play: Collected from pile 1 in 82
+1770643528.9316547: Auto-Play: No moves, dealing one card
+1770643529.5525699: Auto-Play: Collected from pile 2 in 83
+1770643530.1737664: Auto-Play: No moves, dealing one card
+1770643530.7919288: Auto-Play: No moves, dealing one card
+1770643531.4115365: Auto-Play: No moves, dealing one card
+1770643532.0305285: Auto-Play: No moves, dealing one card
+1770643532.6478205: Auto-Play: No moves, dealing one card
+1770643533.2648692: Auto-Play: No moves, dealing one card
+1770643533.8858943: Auto-Play: No moves, dealing one card
+1770643534.5066998: Auto-Play: No moves, dealing one card
+1770643535.1286466: Auto-Play: No moves, dealing one card
+1770643535.7481077: Auto-Play: No moves, dealing one card
+1770643536.3687837: Auto-Play: Collected from pile 0 in 93
+1770643536.988854: Auto-Play: No moves, dealing one card
+1770643537.6105676: Auto-Play: Collected from pile 1 in 94
+1770643538.2307148: Auto-Play: No moves, dealing one card
+1770643538.8527706: Auto-Play: No moves, dealing one card
+1770643539.47387: Auto-Play: No moves, dealing one card
+1770643540.0944686: Auto-Play: No moves, dealing one card
+1770643540.7131593: Auto-Play: No moves, dealing one card
+1770643541.3361213: Auto-Play: Collected from pile 2 in 99
+1770643541.9561312: Auto-Play: No moves, dealing one card
+1770643542.57804: Auto-Play: No moves, dealing one card
+1770643543.1984415: Auto-Play: No moves, dealing one card
+1770643543.8189268: Auto-Play: Collected from pile 1 in 102
+1770643544.4376984: Auto-Play: No moves, dealing one card
+1770643545.055969: Auto-Play: No moves, dealing one card
+1770643545.6761634: Auto-Play: No moves, dealing one card
+1770643546.296376: Auto-Play: No moves, dealing one card
+1770643546.9165924: Auto-Play: Collected from pile 1 in 106
+1770643547.5364757: Auto-Play: No moves, dealing one card
+1770643548.1566038: Auto-Play: No moves, dealing one card
+1770643548.7763746: Auto-Play: No moves, dealing one card
+1770643549.395472: Auto-Play: Collected from pile 0 in 109
+1770643550.0170052: Auto-Play: No moves, dealing one card
+1770643550.6368384: Auto-Play: No moves, dealing one card
+1770643551.2593653: Auto-Play: No moves, dealing one card
+1770643551.8809247: Auto-Play: Collected from pile 3 in 112
+1770643552.5013046: Auto-Play: No moves, dealing one card
+1770643553.1202974: Auto-Play: No moves, dealing one card
+1770643553.7424812: Auto-Play: No moves, dealing one card
+1770643554.3644304: Auto-Play: No moves, dealing one card
+1770643554.9846876: Auto-Play: No moves, dealing one card
+1770643555.607209: Auto-Play: Collected from pile 0 in 117
+1770643556.2302608: Auto-Play: No moves, dealing one card
+1770643556.851648: Auto-Play: No moves, dealing one card
+1770643557.4722116: Auto-Play: Collected from pile 2 in 119
+1770643558.0915134: Auto-Play: No moves, dealing one card
+1770643558.7139146: Auto-Play: No moves, dealing one card
+1770643559.333838: Auto-Play: No moves, dealing one card
+1770643559.9534483: Auto-Play: No moves, dealing one card
+1770643560.5750616: Auto-Play: Collected from pile 2 in 123
+1770643561.196428: Auto-Play: No moves, dealing one card
+1770643561.8178139: Auto-Play: Collected from pile 3 in 124
+1770643562.439859: Auto-Play: No moves, dealing one card
+1770643563.0535908: Auto-Play: No moves, dealing one card
+1770643563.6743972: Auto-Play: No moves, dealing one card
+1770643564.2964578: Auto-Play: No moves, dealing one card
+1770643564.9202719: Auto-Play: Collected from pile 3 in 128
+1770643565.5422642: Auto-Play: No moves, dealing one card
+1770643566.1635191: Auto-Play: No moves, dealing one card
+1770643566.78495: Auto-Play: No moves, dealing one card
+1770643567.4065979: Auto-Play: Collected from pile 2 in 131
+1770643611.615068: Auto-Play thread started
+1770643611.622862: Auto-Play: No moves, dealing one card in 0
+1770643614.6337824: Auto-Play: No moves, dealing one card in 1
+1770643617.644203: Auto-Play: No moves, dealing one card in 2
+1770643620.6545577: Auto-Play: No moves, dealing one card in 3
+1770643623.6705132: Auto-Play: No moves, dealing one card in 4
+1770643626.681469: Auto-Play: No moves, dealing one card in 5
+1770643629.6860714: Auto-Play: No moves, dealing one card in 6
+1770643632.6977963: Auto-Play: No moves, dealing one card in 7
+1770643635.7089906: Auto-Play: No moves, dealing one card in 8
+1770643638.7210038: Auto-Play: No moves, dealing one card in 9
+1770643825.7826006: render_cards started
+1770643825.7888806: render_cards finished
+1770643828.5854747: Auto-Play thread started
+1770643828.597405: Auto-Play: No moves, dealing one card in 0
+1770643828.597994: render_cards started
+1770643828.610824: render_cards finished
+1770643831.611884: Auto-Play: No moves, dealing one card in 1
+1770643831.6126614: render_cards started
+1770643831.6172323: render_cards finished
+1770643834.6177232: Auto-Play: No moves, dealing one card in 2
+1770643834.6185236: render_cards started
+1770643834.6281729: render_cards finished
+1770643837.6294472: Auto-Play: No moves, dealing one card in 3
+1770643837.6298857: render_cards started
+1770643837.633606: render_cards finished
+1770643840.634233: Auto-Play: No moves, dealing one card in 4
+1770643840.634988: render_cards started
+1770643840.6432972: render_cards finished
+1770643843.6439233: Auto-Play: No moves, dealing one card in 5
+1770643843.644901: render_cards started
+1770643843.654144: render_cards finished
+1770643846.6551766: Auto-Play: No moves, dealing one card in 6
+1770643846.6562254: render_cards started
+1770643846.6683981: render_cards finished
+1770643849.6691964: Auto-Play: No moves, dealing one card in 7
+1770643849.6702359: render_cards started
+1770643849.6780503: render_cards finished
+1770643852.6788406: Auto-Play: No moves, dealing one card in 8
+1770643852.6799717: render_cards started
+1770643852.6904588: render_cards finished
+1770643855.6915762: Auto-Play: No moves, dealing one card in 9
+1770643855.6925206: render_cards started
+1770643855.6981308: render_cards finished
+1770643858.6988153: Auto-Play: No moves, dealing one card in 10
+1770643858.6997464: render_cards started
+1770643858.7128756: render_cards finished
+1770643861.713622: Auto-Play: No moves, dealing one card in 11
+1770643861.7145112: render_cards started
+1770643861.7267644: render_cards finished
+1770643960.4716752: Auto-Play thread started
+1770643960.4829485: Auto-Play: No moves, dealing one card in 0
+1770643961.4921172: Auto-Play: No moves, dealing one card in 1
+1770643962.4998708: Auto-Play: No moves, dealing one card in 2
+1770643963.5070283: Auto-Play: No moves, dealing one card in 3
+1770643964.5148332: Auto-Play: No moves, dealing one card in 4
+1770643965.52246: Auto-Play: No moves, dealing one card in 5
+1770643966.5310879: Auto-Play: No moves, dealing one card in 6
+1770643967.5383103: Auto-Play: No moves, dealing one card in 7
+1770643968.5474737: Auto-Play: No moves, dealing one card in 8
+1770643969.555845: Auto-Play: No moves, dealing one card in 9
+1770643970.565024: Auto-Play: No moves, dealing one card in 10
+1770643971.5738707: Auto-Play: No moves, dealing one card in 11
+1770643972.5850365: Auto-Play: No moves, dealing one card in 12
+1770643973.5955613: Auto-Play: No moves, dealing one card in 13
+1770643974.6058183: Auto-Play: No moves, dealing one card in 14
+1770643975.6164038: Auto-Play: No moves, dealing one card in 15
+1770643976.6276436: Auto-Play: No moves, dealing one card in 16
+1770643977.6403232: Auto-Play: No moves, dealing one card in 17
+1770643978.6535428: Auto-Play: No moves, dealing one card in 18
+1770643979.667001: Auto-Play: No moves, dealing one card in 19
+1770643980.6800463: Auto-Play: No moves, dealing one card in 20
+1770643981.6942532: Auto-Play: No moves, dealing one card in 21
+1770643982.7087724: Auto-Play: No moves, dealing one card in 22
+1770643983.7226815: Auto-Play: No moves, dealing one card in 23
+1770643984.7361412: Auto-Play: No moves, dealing one card in 24
+1770643985.7509158: Auto-Play thread stopping
+1770644125.20628: Auto-Play thread started
+1770644125.2171612: Auto-Play: No moves, dealing one card in 0
+1770644126.2278059: Auto-Play: No moves, dealing one card in 1
+1770644127.2391963: Auto-Play: No moves, dealing one card in 2
+1770644128.2494252: Auto-Play: No moves, dealing one card in 3
+1770644129.2599986: Auto-Play: No moves, dealing one card in 4
+1770644130.2669272: Auto-Play: No moves, dealing one card in 5
+1770644131.2768822: Auto-Play: No moves, dealing one card in 6
+1770644132.2876983: Auto-Play: No moves, dealing one card in 7
+1770644133.300696: Auto-Play: No moves, dealing one card in 8
+1770644134.3123531: Auto-Play: No moves, dealing one card in 9
+1770644135.3237383: Auto-Play: No moves, dealing one card in 10
+1770644136.3369036: Auto-Play: No moves, dealing one card in 11
+1770644137.350524: Auto-Play: No moves, dealing one card in 12
+1770644138.3631566: Auto-Play: No moves, dealing one card in 13
+1770644139.3753402: Auto-Play: No moves, dealing one card in 14
+1770644140.3892689: Auto-Play: No moves, dealing one card in 15
+1770644141.4045875: Auto-Play: No moves, dealing one card in 16
+1770644142.419451: Auto-Play: No moves, dealing one card in 17
+1770644143.4342754: Auto-Play: Collected from pile 1 in 18
+1770644144.4478936: Auto-Play: No moves, dealing one card in 18
+1770644145.4621124: Auto-Play: No moves, dealing one card in 19
+1770644146.4781082: Auto-Play: No moves, dealing one card in 20
+1770644147.4939945: Auto-Play: No moves, dealing one card in 21
+1770644148.5070744: Auto-Play: No moves, dealing one card in 22
+1770644149.522418: Auto-Play: No moves, dealing one card in 23
+1770644150.5371451: Auto-Play: Collected from pile 3 in 24
+1770644151.551674: Auto-Play: No moves, dealing one card in 24
+1770644152.5671306: Auto-Play: No moves, dealing one card in 25
+1770644153.58272: Auto-Play: No moves, dealing one card in 26
+1770644154.5999424: Auto-Play: Collected from pile 2 in 27
+1770644155.616017: Auto-Play: No moves, dealing one card in 27
+1770644156.630305: Auto-Play: No moves, dealing one card in 28
+1770644157.6458862: Auto-Play: No moves, dealing one card in 29
+1770644158.6631002: Auto-Play: No moves, dealing one card in 30
+1770644159.6797745: Auto-Play: No moves, dealing one card in 31
+1770644160.6957302: Auto-Play: Collected from pile 3 in 32
+1770644161.7131176: Auto-Play: No moves, dealing one card in 32
+1770644162.7292626: Auto-Play: No moves, dealing one card in 33
+1770644163.7399035: Auto-Play: No moves, dealing one card in 34
+1770644164.7542655: Auto-Play: No moves, dealing one card in 35
+1770644165.7661: Auto-Play: No moves, dealing one card in 36
+1770644166.7751188: Auto-Play: No moves, dealing one card in 37
+1770644167.7870004: Auto-Play: No moves, dealing one card in 38
+1770644168.799701: Auto-Play: No moves, dealing one card in 39
+1770644169.816379: Auto-Play: Collected from pile 3 in 40
+1770644170.8328567: Auto-Play: No moves, dealing one card in 40
+1770644171.8491294: Auto-Play: No moves, dealing one card in 41
+1770644172.8638532: Auto-Play: No moves, dealing one card in 42
+1770644173.8745143: Auto-Play: No moves, dealing one card in 43
+1770644262.9334514: Auto-Play thread started
+1770644262.9428594: Auto-Play: Dealing card in 0
+1770644263.752: Auto-Play: Dealing card in 1
+1770644264.562781: Auto-Play: Dealing card in 2
+1770644265.373985: Auto-Play: Dealing card in 3
+1770644266.1839945: Auto-Play: Dealing card in 4
+1770644266.995462: Auto-Play: Dealing card in 5
+1770644267.807057: Auto-Play: Dealing card in 6
+1770644268.6181507: Auto-Play: Dealing card in 7
+1770644269.4293225: Auto-Play: Dealing card in 8
+1770644270.2404256: Auto-Play: Dealing card in 9
+1770644271.0531893: Auto-Play: Dealing card in 10
+1770644271.867985: Auto-Play: Dealing card in 11
+1770644272.6813066: Auto-Play: Dealing card in 12
+1770644273.4942691: Auto-Play: Dealing card in 13
+1770644274.307179: Auto-Play: Dealing card in 14
+1770644275.1207507: Auto-Play: Collected from pile 2 in 15
+1770644275.9344695: Auto-Play: Dealing card in 15
+1770644276.7476084: Auto-Play: Dealing card in 16
+1770644277.5610378: Auto-Play: Dealing card in 17
+1770644278.3743453: Auto-Play: Dealing card in 18
+1770644279.1888845: Auto-Play: Dealing card in 19
+1770644280.0049708: Auto-Play: Dealing card in 20
+1770644280.8249638: Auto-Play: Dealing card in 21
+1770644281.635294: Auto-Play: Dealing card in 22
+1770644282.454244: Auto-Play: Dealing card in 23
+1770644283.269532: Auto-Play: Dealing card in 24
+1770644284.086768: Auto-Play: Dealing card in 25
+1770644284.9032843: Auto-Play: Collected from pile 1 in 26
+1770644285.7200463: Auto-Play: Dealing card in 26
+1770644286.5379145: Auto-Play: Collected from pile 2 in 27
+1770644287.3532429: Auto-Play: Dealing card in 27
+1770644288.1692796: Auto-Play: Dealing card in 28
+1770644288.9881477: Auto-Play: Collected from pile 0 in 29
+1770644289.8043008: Auto-Play: Dealing card in 29
+1770644290.6241398: Auto-Play: Dealing card in 30
+1770644291.4387035: Auto-Play: Dealing card in 31
+1770644292.2561674: Auto-Play: Dealing card in 32
+1770644293.0737703: Auto-Play: Dealing card in 33
+1770644293.8920436: Auto-Play: Dealing card in 34
+1770644294.7100391: Auto-Play: Dealing card in 35
+1770644295.5253725: Auto-Play: Collected from pile 3 in 36
+1770644296.3421512: Auto-Play: Dealing card in 36
+1770644297.1603174: Auto-Play: Collected from pile 0 in 37
+1770644297.9758594: Auto-Play: Dealing card in 37
+1770644298.792289: Auto-Play: Collected from pile 1 in 38
+1770644299.607334: Auto-Play: Collected from pile 1 in 38
+1770644300.421641: Auto-Play: Dealing card in 38
+1770644301.235878: Auto-Play: Dealing card in 39
+1770644302.042319: Auto-Play: Collected from pile 3 in 40
+1770644440.0492034: Auto-Play thread started
+1770644440.056671: Auto-Play: Dealing card in 0
+1770644440.8878143: Auto-Play: Dealing card in 1
+1770644441.7186382: Auto-Play: Dealing card in 2
+1770644442.549186: Auto-Play: Dealing card in 3
+1770644443.3797739: Auto-Play: Dealing card in 4
+1770644444.2103424: Auto-Play: Dealing card in 5
+1770644445.0405097: Auto-Play: Dealing card in 6
+1770644445.8710423: Auto-Play: Dealing card in 7
+1770644446.7013953: Auto-Play: Dealing card in 8
+1770644447.5328503: Auto-Play: Dealing card in 9
+1770644448.3631415: Auto-Play: Dealing card in 10
+1770644449.1944952: Auto-Play: Dealing card in 11
+1770644450.025909: Auto-Play: Dealing card in 12
+1770644450.8580062: Auto-Play: Dealing card in 13
+1770644451.6898768: Auto-Play: Dealing card in 14
+1770644452.5229626: Auto-Play: Dealing card in 15
+1770644453.3555126: Auto-Play: Dealing card in 16
+1770644454.1860535: Auto-Play: Dealing card in 17
+1770644455.014119: Auto-Play: Dealing card in 18
+1770644455.8469205: Auto-Play: Collected from pile 2 in 19
+1770644456.678904: Auto-Play: Dealing card in 19
+1770644457.5123765: Auto-Play: Collected from pile 3 in 20
+1770644458.343714: Auto-Play: Dealing card in 20
+1770644459.1768548: Auto-Play: Dealing card in 21
+1770644460.0098355: Auto-Play: Dealing card in 22
+1770644460.8442864: Auto-Play: Dealing card in 23
+1770644461.676054: Auto-Play: Dealing card in 24
+1770644462.509571: Auto-Play: Collected from pile 0 in 25
+1770644463.3417034: Auto-Play: Dealing card in 25
+1770644464.1754444: Auto-Play: Dealing card in 26
+1770644465.0074244: Auto-Play: Dealing card in 27
+1770644465.8401916: Auto-Play: Dealing card in 28
+1770644547.7150433: Auto-Play started via Timer
+1770644547.7160923: Auto-Play: Dealing card in 0
+1770644548.255091: Auto-Play: Dealing card in 1
+1770644548.7986128: Auto-Play: Dealing card in 2
+1770644549.344337: Auto-Play: Dealing card in 3
+1770644549.8898118: Auto-Play: Dealing card in 4
+1770644550.4367552: Auto-Play: Dealing card in 5
+1770644550.9694848: Auto-Play: Dealing card in 6
+1770644551.5136948: Auto-Play: Dealing card in 7
+1770644552.0455813: Auto-Play: Dealing card in 8
+1770644552.5789526: Auto-Play: Dealing card in 9
+1770644553.1099184: Auto-Play: Collected from pile 1 in 10
+1770644553.6543977: Auto-Play: Dealing card in 10
+1770644554.199178: Auto-Play: Dealing card in 11
+1770644554.743183: Auto-Play: Dealing card in 12
+1770644555.2890604: Auto-Play: Collected from pile 0 in 13
+1770644555.8213432: Auto-Play: Dealing card in 13
+1770644556.3518026: Auto-Play: Dealing card in 14
+1770644556.884599: Auto-Play: Dealing card in 15
+1770644557.428351: Auto-Play: Dealing card in 16
+1770644557.9620895: Auto-Play: Dealing card in 17
+1770644558.4938066: Auto-Play: Dealing card in 18
+1770644559.0400648: Auto-Play: Dealing card in 19
+1770644559.576373: Auto-Play: Collected from pile 3 in 20
+1770644560.1081054: Auto-Play: Dealing card in 20
+1770644560.6530635: Auto-Play: Dealing card in 21
+1770644561.1979787: Auto-Play: Dealing card in 22
+1770644561.745563: Auto-Play: Collected from pile 2 in 23
+1770644562.2789176: Auto-Play: Dealing card in 23
+1770644562.8240182: Auto-Play: Dealing card in 24
+1770644563.3582582: Auto-Play: Dealing card in 25
+1770644563.902095: Auto-Play: Collected from pile 1 in 26
+1770644564.4476585: Auto-Play: Dealing card in 26
+1770644564.979967: Auto-Play: Dealing card in 27
+1770644565.511522: Auto-Play: Dealing card in 28
+1770644566.0571132: Auto-Play: Collected from pile 0 in 29
+1770644566.6046145: Auto-Play: Dealing card in 29
+1770644567.1500509: Auto-Play: Dealing card in 30
+1770644567.682968: Auto-Play: Collected from pile 2 in 31
+1770644568.2141588: Auto-Play: Dealing card in 31
+1770644568.7464883: Auto-Play: Dealing card in 32
+1770644569.2803307: Auto-Play: Dealing card in 33
+1770644569.8244016: Auto-Play: Dealing card in 34
+1770644570.370431: Auto-Play: Dealing card in 35
+1770644570.9155705: Auto-Play: Collected from pile 3 in 36
+1770644571.4609675: Auto-Play: Dealing card in 36
+1770644572.0065818: Auto-Play: Dealing card in 37
+1770644572.5384674: Auto-Play: Dealing card in 38
+1770644573.0860283: Auto-Play: Dealing card in 39
+1770644573.6191642: Auto-Play: Dealing card in 40
+1770644574.151655: Auto-Play: Collected from pile 0 in 41
+1770644574.6831007: Auto-Play: Dealing card in 41
+1770644575.229316: Auto-Play: Collected from pile 1 in 42
+1770644575.7749364: Auto-Play: Dealing card in 42
+1770644576.3204932: Auto-Play: Dealing card in 43
+1770644576.8645394: Auto-Play: Dealing card in 44
+1770644577.3970275: Auto-Play: Dealing card in 45
+1770644577.9302418: Auto-Play: Dealing card in 46
+1770644578.4773722: Auto-Play: Dealing card in 47
+1770644579.0250814: Auto-Play: Collected from pile 3 in 48
+1770644579.557486: Auto-Play: Dealing card in 48
+1770644580.10097: Auto-Play: Dealing card in 49
+1770644580.646053: Auto-Play: Dealing card in 50
+1770644581.178924: Auto-Play: Dealing card in 51
+1770644581.7256796: Auto-Play: Dealing card in 52
+1770644582.2721627: Auto-Play: Dealing card in 53
+1770644582.8055015: Auto-Play: Dealing card in 54
+1770644583.3529537: Auto-Play: Dealing card in 55
+1770644583.900093: Auto-Play: Dealing card in 56
