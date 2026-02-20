@@ -290,7 +290,7 @@ class Game():
         x1 = self.width_gap
         y1 = self.height_gap * 3
         x2 = x1 + self.width_gap * 3 + self.card_width * 4
-        y2 = y1 + self.height_gap * 5 + self.card_height
+        y2 = y1 + self.height_gap * 40 + self.card_height
         return True if (x1 < x < x2) and (y1 < y < y2) else False
 
     def is_in_pile_n(self, x, y):
@@ -307,8 +307,8 @@ class Game():
                 i = int(y_in_pile_area / self.height_gap)
                 cards_in_pile = len(self.TheGame.card_piles[pile].rg_cards)
                 if cards_in_pile > 0:
-                    if self.b_display_short_pile and cards_in_pile > 5:
-                        if i >= 6: i = 5
+                    if self.b_display_short_pile and cards_in_pile > self.TheGame.SHORT_PILE_MAX_DISPLAY:
+                        if i >= self.TheGame.SHORT_PILE_MAX_DISPLAY: i = self.TheGame.SHORT_PILE_MAX_DISPLAY - 1
                     else:
                         if i >= cards_in_pile: i = cards_in_pile - 1
                     if i < 0: i = 0
@@ -552,12 +552,13 @@ class Game():
         for idx in indices:
             card_val = pile.rg_cards[idx]
             display_idx = idx
-            if self.b_display_short_pile and n > 5:
-                if idx < 2: display_idx = idx
-                elif idx == n-1: display_idx = 5
-                elif idx == n-2: display_idx = 4
-                elif idx == n-3: display_idx = 3
-                else: continue
+            if self.b_display_short_pile and n > self.TheGame.SHORT_PILE_MAX_DISPLAY:
+                if idx < self.TheGame.SHORT_PILE_TOP_COUNT:
+                    display_idx = idx
+                elif idx >= n - self.TheGame.SHORT_PILE_BOTTOM_COUNT:
+                    display_idx = idx - (n - self.TheGame.SHORT_PILE_MAX_DISPLAY)
+                else:
+                    continue # Gap card
             y = self.height_gap * (display_idx + 3) + self.card_height // 2
             cards_to_animate.append((self.card_img[card_val], y))
         completed = [0]
@@ -690,7 +691,7 @@ class Game():
                     for i, card_val in enumerate(display_list):
                         img = self.card_img[card_val] if card_val is not None else self.backimg
                         canv.create_image(self.card_width//2 + 5, self.card_height//2 + i * self.height_gap + 5, image=img)
-                    canv.bind("<Button-1>", lambda e, p=pile_idx, r=rule_id: select(p, r))
+                    canv.bind("<Button-1>", lambda e, p=pile_idx, r=r_id: select(p, r))
         Button(dialog, text="Cancel / Go Back", command=dialog.destroy, height=2, bg="#fbb").pack(side=BOTTOM, fill=X, padx=20, pady=10)
         self.center_window(dialog)
         return dialog
@@ -776,18 +777,27 @@ class Game():
             if pile == self.TheGame.current_pile: bg, fg = 'yellow', '#F00'
             elif mask > 0: bg, fg = '#ADD8E6', '#00F'
             self.label_piles[pile] = self.draw_label(None, (self.width_gap + self.card_width) * pile + self.width_gap, self.height_gap, self.card_width, self.height_gap, str(cards_in_deck), background=bg, text_color=fg)
-            display_indices = range(min(cards_in_deck, 6)) if self.b_display_short_pile and cards_in_deck > 5 else range(cards_in_deck)
-            for i in display_indices:
-                xx = (self.width_gap + self.card_width) * pile + self.width_gap
-                yy = self.height_gap * (i+3)
-                if self.b_display_short_pile and cards_in_deck > 5:
-                    if i < 2: card_val = self.TheGame.card_piles[pile].rg_cards[i]
-                    elif i == 2: image = self.backimg
-                    else: card_val = self.TheGame.card_piles[pile].rg_cards[i + (cards_in_deck - 6)]
-                else: card_val = self.TheGame.card_piles[pile].rg_cards[i]
-                if not (self.b_display_short_pile and cards_in_deck > 5 and i == 2):
+            
+            if self.b_display_short_pile and cards_in_deck > self.TheGame.SHORT_PILE_MAX_DISPLAY:
+                # Show top 3, back, bottom 11
+                for i in range(self.TheGame.SHORT_PILE_MAX_DISPLAY):
+                    xx = (self.width_gap + self.card_width) * pile + self.width_gap
+                    yy = self.height_gap * (i+3)
+                    if i < self.TheGame.SHORT_PILE_TOP_COUNT:
+                        card_val = self.TheGame.card_piles[pile].rg_cards[i]
+                        image = self.card_img[card_val]
+                    elif i == self.TheGame.SHORT_PILE_TOP_COUNT:
+                        image = self.backimg
+                    else:
+                        card_val = self.TheGame.card_piles[pile].rg_cards[i + (cards_in_deck - self.TheGame.SHORT_PILE_MAX_DISPLAY)]
+                        image = self.card_img[card_val]
+                    self.card_check_boxes.append(self.draw_card(None, xx + self.card_width // 2, yy + self.card_height // 2, image))
+            else:
+                for i, card_val in enumerate(self.TheGame.card_piles[pile].rg_cards):
+                    xx = (self.width_gap + self.card_width) * pile + self.width_gap
+                    yy = self.height_gap * (i+3)
                     image = self.card_img[card_val]
-                self.card_check_boxes.append(self.draw_card(None, xx + self.card_width // 2, yy + self.card_height // 2, image))
+                    self.card_check_boxes.append(self.draw_card(None, xx + self.card_width // 2, yy + self.card_height // 2, image))
         self.label_hands = self.draw_label(self.label_hands, (self.width_gap + self.card_width) * 4 + self.width_gap, self.height_gap, self.card_width, self.height_gap, str(self.TheGame.cnt_hands))
         bx, h2 = (self.width_gap + self.card_width) * 4 + self.width_gap, self.height_gap * 2
         self.label_queue = self.draw_label(self.label_queue, bx, self.window_height - h2 * 4 - self.height_gap - 24, self.card_width, self.height_gap, str(self.TheGame.card_queue.n_count))

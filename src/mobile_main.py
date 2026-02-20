@@ -103,15 +103,15 @@ class MobileGameAdapter:
         anim_cards = []
         for i, idx in enumerate(card_indices):
             # Calculate start Y based on short-pile logic
-            if n <= 15:
+            if n <= self.TheGame.SHORT_PILE_MAX_DISPLAY:
                 display_idx = idx
             else:
-                if idx < 3:
+                if idx < self.TheGame.SHORT_PILE_TOP_COUNT:
                     display_idx = idx
-                elif idx >= n - 11:
-                    display_idx = idx - (n - 15)
+                elif idx >= n - self.TheGame.SHORT_PILE_BOTTOM_COUNT:
+                    display_idx = idx - (n - self.TheGame.SHORT_PILE_MAX_DISPLAY)
                 else:
-                    display_idx = 3 # Hidden zone indicator position
+                    display_idx = self.TheGame.SHORT_PILE_TOP_COUNT # Hidden zone indicator position
             
             start_y = start_y_offset + display_idx * 22
                 
@@ -148,7 +148,7 @@ class MobileGameAdapter:
         dest_x = 5 + pile_idx * (71 + 5)
         p_obj = self.TheGame.card_piles[pile_idx]
         n = p_obj.n_card_count
-        display_idx = min(n, 14)
+        display_idx = min(n, self.TheGame.SHORT_PILE_MAX_DISPLAY - 1)
         dest_y = 48 + display_idx * 22
         
         card_img = ft.Image(
@@ -200,7 +200,7 @@ class MobileGameAdapter:
                         )
                     )
                 else:
-                    if p_obj.n_card_count <= 15:
+                    if p_obj.n_card_count <= self.TheGame.SHORT_PILE_MAX_DISPLAY:
                         for idx, val in enumerate(p_obj.rg_cards):
                             new_controls.append(
                                 ft.Image(
@@ -210,15 +210,15 @@ class MobileGameAdapter:
                                 )
                             )
                     else:
-                        # Show first 3
-                        for idx in range(3):
+                        # Show first 3 (SHORT_PILE_TOP_COUNT)
+                        for idx in range(self.TheGame.SHORT_PILE_TOP_COUNT):
                             val = p_obj.rg_cards[idx]
                             new_controls.append(ft.Image(src=get_card_image_path(val), width=71, height=96, fit="contain", top=idx * 22))
                         # Show gap indicator (card back)
-                        new_controls.append(ft.Image(src=get_back_image_path(), width=71, height=96, fit="contain", top=3 * 22))
-                        # Show last 11
-                        for pos_idx in range(4, 15):
-                            card_idx = pos_idx + (p_obj.n_card_count - 15)
+                        new_controls.append(ft.Image(src=get_back_image_path(), width=71, height=96, fit="contain", top=self.TheGame.SHORT_PILE_TOP_COUNT * 22))
+                        # Show last 11 (SHORT_PILE_BOTTOM_COUNT)
+                        for pos_idx in range(self.TheGame.SHORT_PILE_TOP_COUNT + 1, self.TheGame.SHORT_PILE_MAX_DISPLAY):
+                            card_idx = pos_idx + (p_obj.n_card_count - self.TheGame.SHORT_PILE_MAX_DISPLAY)
                             val = p_obj.rg_cards[card_idx]
                             new_controls.append(ft.Image(src=get_card_image_path(val), width=71, height=96, fit="contain", top=pos_idx * 22))
                 
