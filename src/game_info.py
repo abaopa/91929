@@ -121,16 +121,68 @@ class GameInfo:
         with open(filepath, 'r') as f:
             game_state = json.load(f)
 
-        # Restore initial deck and restart from beginning
-        deck = game_state.get('cards_deck')
-        if deck:
-            self.cards = Cards(deck)
-            self.play_real_init(False) # Don't shuffle, use the loaded deck
-            self.game.print_deck()
-            self.game.print_all_piles()
-            self.game.print_game_info()
-        else:
-            raise ValueError("No deck information found in save file.")
+        self.b_win = game_state['b_win']
+        self.b_done = game_state['b_done']
+        self.b_auto_saved = game_state['b_auto_saved']
+        self.cnt_hands = game_state['cnt_hands']
+        self.current_pile = game_state['current_pile']
+
+        # Restore initial deck
+        self.cards.rg_cards = game_state['cards_deck']
+        # Re-initialize Cards object with the loaded deck
+        self.cards = Cards(self.cards.rg_cards)
+
+        # Restore CardQueue
+        self.card_queue = CardQueue([]) # Initialize empty
+        self.card_queue.rg_cards = game_state['card_queue']['rg_cards']
+        self.card_queue.n_count = game_state['card_queue']['n_count']
+
+        # Restore CardPiles
+        self.card_piles = []
+        for pile_data in game_state['card_piles']:
+            pile = CardPile() # Initialize empty
+            pile.rg_cards = pile_data['rg_cards']
+            pile.n_card_count = pile_data['n_card_count']
+            pile.b_pile_empty = pile_data['b_pile_empty']
+            self.card_piles.append(pile)
+
+        # Restore rg_stack_operation
+        self.rg_stack_operation = []
+        for stack_item_data in game_state['rg_stack_operation']:
+            # Reconstruct the original tuple format
+            item = (
+                stack_item_data['current_pile'],
+                stack_item_data['cnt_hands'],
+                (
+                    stack_item_data['piles'][0]['rg_cards'],
+                    stack_item_data['piles'][0]['n_card_count'],
+                    stack_item_data['piles'][0]['b_pile_empty']
+                ),
+                (
+                    stack_item_data['piles'][1]['rg_cards'],
+                    stack_item_data['piles'][1]['n_card_count'],
+                    stack_item_data['piles'][1]['b_pile_empty']
+                ),
+                (
+                    stack_item_data['piles'][2]['rg_cards'],
+                    stack_item_data['piles'][2]['n_card_count'],
+                    stack_item_data['piles'][2]['b_pile_empty']
+                ),
+                (
+                    stack_item_data['piles'][3]['rg_cards'],
+                    stack_item_data['piles'][3]['n_card_count'],
+                    stack_item_data['piles'][3]['b_pile_empty']
+                ),
+                (
+                    stack_item_data['queue']['rg_cards'],
+                    stack_item_data['queue']['n_count']
+                )
+            )
+            self.rg_stack_operation.append(item)
+        
+        self.game.print_deck()
+        self.game.print_all_piles()
+        self.game.print_game_info()
 
     def play_real_init(self, b_shuffle_cards):
         self.b_done = False
@@ -296,7 +348,29 @@ class GameInfo:
                 
                 # Pick the first available move (no AI)
                 p_idx, r_id = all_moves[0]
+
+                # Show the selection visually if in tactile mode
+                if hasattr(self.game, 'b_tactile_mode') and self.game.b_tactile_mode.get():
+                    self.game.selected_pile = p_idx
+                    pile_len = len(self.card_piles[p_idx].rg_cards)
+                    # Map rule ID back to indices
+                    if r_id == 4: # Rule 1
+                        self.game.selected_indices = [0, 1, pile_len-1]
+                    elif r_id == 2: # Rule 2
+                        self.game.selected_indices = [0, pile_len-2, pile_len-1]
+                    elif r_id == 1: # Rule 3
+                        self.game.selected_indices = [pile_len-3, pile_len-2, pile_len-1]
+
+                    if b_verbose:
+                        self.game.render_cards()
+                        time.sleep(0.3) # Wait a beat so the user sees the "pop"
+
                 self.card_piles[p_idx].collect_rule(r_id, self.card_queue)
+
+                if hasattr(self.game, 'b_tactile_mode') and self.game.b_tactile_mode.get():
+                    self.game.selected_indices = []
+                    self.game.selected_pile = -1
+
                 moved = True
                 
                 if moved and b_verbose:

@@ -65,6 +65,12 @@ class Game():
         """Sets up the Tkinter user interface."""
 
         self.root = Tk()
+        
+        # Tactile Mode State (Moved here so self.root exists)
+        self.b_tactile_mode = BooleanVar(self.root, True)
+        self.selected_indices = []
+        self.selected_pile = -1
+
         self.root.title('91929')
         self.root.resizable(False, False)
         self.root.configure(bg='#369')
@@ -96,6 +102,9 @@ class Game():
         self.auto_play_delay = DoubleVar(self.root, 0.2)
 
         options_menu = Menu(menu_bar, tearoff=0)
+        options_menu.add_checkbutton(label="Tactile Collection", onvalue=True, offvalue=False,
+                                     variable=self.b_tactile_mode)
+        options_menu.add_separator()
         options_menu.add_checkbutton(label="Assistant Alert", onvalue=True, offvalue=False,
                                      variable=self.b_auto_check1, command=self.toggle_auto_check_option)
         options_menu.add_checkbutton(label="Auto Play", onvalue=True, offvalue=False,
@@ -290,7 +299,7 @@ class Game():
         x1 = self.width_gap
         y1 = self.height_gap * 3
         x2 = x1 + self.width_gap * 3 + self.card_width * 4
-        y2 = y1 + self.height_gap * 40 + self.card_height
+        y2 = y1 + self.height_gap * self.TheGame.SHORT_PILE_MAX_DISPLAY + self.card_height
         return True if (x1 < x < x2) and (y1 < y < y2) else False
 
     def is_in_pile_n(self, x, y):
@@ -338,7 +347,82 @@ class Game():
         if self.is_in_inner_canvas(event.x, event.y):
             pile_idx = self.is_in_pile_n(event.x, event.y)
             if pile_idx >= 0:
-                self.collect_from_pile(pile_idx)
+                if self.b_tactile_mode.get():
+                    self.handle_tactile_click(pile_idx, event.y)
+                else:
+                    self.collect_from_pile(pile_idx)
+
+    def handle_tactile_click(self, pile_idx, mouse_y):
+        """Handles selecting individual cards for the 3-card collection set."""
+        # Challenge Rule: ONLY allowed at the current dealing pile
+        if pile_idx != self.TheGame.current_pile:
+            return
+
+        if self.selected_pile != pile_idx:
+            self.selected_indices = []
+            self.selected_pile = pile_idx
+
+        y_relative = mouse_y - (self.height_gap * 3)
+        visual_idx = int(y_relative / self.height_gap)
+        
+        pile_len = len(self.TheGame.card_piles[pile_idx].rg_cards)
+        
+        if self.b_display_short_pile and pile_len > self.TheGame.SHORT_PILE_MAX_DISPLAY:
+            if visual_idx < self.TheGame.SHORT_PILE_TOP_COUNT:
+                actual_card_idx = visual_idx
+            elif visual_idx == self.TheGame.SHORT_PILE_TOP_COUNT:
+                # The "hidden" gap card (backimg) - ignore click
+                return
+            else:
+                # Bottom part: visual_idx starts at SHORT_PILE_TOP_COUNT + 1
+                actual_card_idx = visual_idx - (self.TheGame.SHORT_PILE_TOP_COUNT + 1) + (pile_len - self.TheGame.SHORT_PILE_BOTTOM_COUNT)
+        else:
+            actual_card_idx = visual_idx
+        
+        if actual_card_idx >= pile_len:
+            actual_card_idx = pile_len - 1
+        if actual_card_idx < 0:
+            return
+
+        if actual_card_idx in self.selected_indices:
+            self.selected_indices.remove(actual_card_idx)
+        else:
+            self.selected_indices.append(actual_card_idx)
+            if len(self.selected_indices) > 3:
+                self.selected_indices.pop(0)
+
+        if len(self.selected_indices) == 3:
+            self.validate_tactile_collection(pile_idx)
+        
+        self.render_cards()
+
+    def validate_tactile_collection(self, pile_idx):
+        """Checks if the 3 popped cards match a legal Rule (1, 2, or 3)."""
+        pile = self.TheGame.card_piles[pile_idx]
+        pile_len = len(pile.rg_cards)
+        sel = sorted(self.selected_indices)
+        
+        matched_rule = None
+        if sel == [0, 1, pile_len-1]: matched_rule = 4
+        elif sel == [0, pile_len-2, pile_len-1]: matched_rule = 2
+        elif sel == [pile_len-3, pile_len-2, pile_len-1]: matched_rule = 1
+        
+        if matched_rule:
+            try:
+                import winsound
+                winsound.Beep(1000, 100)
+            except ImportError: pass
+            
+            pile.collect_rule(matched_rule, self.TheGame.card_queue)
+            self.selected_indices = []
+            self.selected_pile = -1
+            self.check_and_report_win()
+        else:
+            try:
+                import winsound
+                winsound.Beep(200, 200)
+            except ImportError: pass
+            self.selected_indices = []
 
     def mouse_button2_down(self, event): pass
     def mouse_button3_down(self, event): pass
@@ -450,6 +534,10 @@ class Game():
         step(0)
 
     def deal_button_clicked(self):
+        # Un-pop any cards before dealing
+        self.selected_indices = []
+        self.selected_pile = -1
+
         if self.b_auto_check:
             missed = []
             non_empty_piles = [p for p in self.TheGame.card_piles if not p.b_pile_empty]
@@ -481,7 +569,8 @@ class Game():
             start_x, start_y = bx + self.card_width // 2, self.window_height - h2 * 6 - 30 + h2 // 2
             dest_x = (self.width_gap + self.card_width) * next_pile_idx + self.width_gap + self.card_width // 2
             cards_in_dest = len(self.TheGame.card_piles[next_pile_idx].rg_cards)
-            display_idx = min(cards_in_dest, 5) if self.b_display_short_pile else cards_in_dest
+            # For animation, if short-pile is on, target the 'gap' or just below top part if full
+            display_idx = min(cards_in_dest, self.TheGame.SHORT_PILE_TOP_COUNT + 2) if self.b_display_short_pile else cards_in_dest
             dest_y = self.height_gap * (display_idx + 3) + self.card_height // 2
             card_val = self.TheGame.card_queue.rg_cards[0]
             image = self.card_img[card_val]
@@ -521,8 +610,21 @@ class Game():
                             rule_to_apply = r
                             break
                     if rule_to_apply > 0:
-                        delay_ms = int(self.auto_play_delay.get() * 1000)
-                        self.root.after(delay_ms, lambda: self.animate_collection(i, rule_to_apply, lambda: self.finish_auto_collect()))
+                        # Demonstate the "pop" visually first
+                        if self.b_tactile_mode.get():
+                            self.selected_pile = i
+                            n = self.TheGame.card_piles[i].n_card_count
+                            if rule_to_apply == 4: self.selected_indices = [0, 1, n - 1]
+                            elif rule_to_apply == 2: self.selected_indices = [0, n - 2, n - 1]
+                            elif rule_to_apply == 1: self.selected_indices = [n - 3, n - 2, n - 1]
+                            
+                            self.render_cards()
+                            # Short delay to see the cards "pop"
+                            delay_ms = int(max(0.1, self.auto_play_delay.get()) * 1000 // 2)
+                            self.root.after(delay_ms, lambda: self.animate_collection(i, rule_to_apply, lambda: self.finish_auto_collect()))
+                        else:
+                            delay_ms = int(self.auto_play_delay.get() * 1000)
+                            self.root.after(delay_ms, lambda: self.animate_collection(i, rule_to_apply, lambda: self.finish_auto_collect()))
                         moved = True
                         return
             if not moved:
@@ -541,6 +643,11 @@ class Game():
         if rule_id == 4: indices = [0, 1, n - 1]
         elif rule_id == 2: indices = [0, n - 2, n - 1]
         elif rule_id == 1: indices = [n - 3, n - 2, n - 1]
+        
+        # Clear selection state now that we are moving
+        self.selected_indices = []
+        self.selected_pile = -1
+
         if not indices:
             if callback: callback()
             return
@@ -583,31 +690,67 @@ class Game():
                 next_card_is_3 = True
         is_last_pile = len(non_empty_piles) == 1 and \
                        (self.TheGame.cnt_hands < 40 or (self.TheGame.card_queue.n_count > 0 and not next_card_is_3))
+        
         collectable = pile.try_collect_cards(self.TheGame.card_queue, False, self.TheGame.rule_priority, is_last_pile)
-        if collectable == 0: return
+
+        if collectable == 0:
+            return
+
+        # Always show the selection dialog to allow user confirmation/choice
         dlg = self.show_collection_dialog(collectable, pile_idx)
-        self.root.wait_window(dlg)
+        self.root.wait_window(dlg) # Block until dialog is closed
+
+        self.print_all_piles()
+        self.print_game_info()
         self.render_cards()
         self.check_and_report_win()
-        if self.TheGame.b_done: self.auto_save_if_over()
+        
+        if self.TheGame.b_done:
+            self.auto_save_if_over()
+
+        # Check if there are more moves possible for this pile
+        new_collectable = pile.try_collect_cards(self.TheGame.card_queue, False, self.TheGame.rule_priority, is_last_pile)
+        if (new_collectable > 0):
+            print("=== More moves possible for pile", pile_idx, ":", new_collectable)
 
     def center_window(self, win):
+        """Centers a Toplevel window relative to the root window."""
         win.update_idletasks()
-        root_w, root_h, root_x, root_y = self.root.winfo_width(), self.root.winfo_height(), self.root.winfo_x(), self.root.winfo_y()
-        win_w, win_h = win.winfo_width(), win.winfo_height()
-        x, y = root_x + (root_w // 2) - (win_w // 2), root_y + (root_h // 2) - (win_h // 2)
+        
+        # Get dimensions of the root window and its position
+        root_w = self.root.winfo_width()
+        root_h = self.root.winfo_height()
+        root_x = self.root.winfo_x()
+        root_y = self.root.winfo_y()
+        
+        # Get dimensions of the dialog window
+        win_w = win.winfo_width()
+        win_h = win.winfo_height()
+        
+        # Calculate center position
+        x = root_x + (root_w // 2) - (win_w // 2)
+        y = root_y + (root_h // 2) - (win_h // 2)
+        
         win.geometry(f"+{x}+{y}")
 
     def show_collection_dialog(self, mask, pile_idx):
+        """Creates a popup window for the user to choose a collection combination with vertical stacks."""
         dialog = Toplevel(self.root)
         dialog.title(f"Choose Move - Pile {pile_idx}")
         dialog.transient(self.root)
         dialog.grab_set()
-        Label(dialog, text="Choose Move", font=("Arial", 10, "bold"), pady=10).pack(side=TOP)
+
+        Label(dialog, text="Choose Move", 
+              font=("Arial", 10, "bold"), pady=10).pack(side=TOP)
+
         pile = self.TheGame.card_piles[pile_idx]
+
         def select(rule_id):
+            pile.collect_rule(rule_id, self.TheGame.card_queue)
+            self.render_cards()
             dialog.destroy()
-            self.animate_collection(pile_idx, rule_id, lambda: self.render_cards())
+
+        # Highlight the first available move without using AI
         best_p_idx, best_rule = (None, 0)
         non_empty_piles = [p for p in self.TheGame.card_piles if not p.b_pile_empty]
         next_card_is_3 = False
@@ -615,7 +758,7 @@ class Game():
             if (int(self.TheGame.card_queue.rg_cards[0] / 4) + 1) == 3:
                 next_card_is_3 = True
         is_last_pile = len(non_empty_piles) == 1 and \
-                       (self.TheGame.cnt_hands < 40 or (self.TheGame.card_queue.n_count > 0 and not next_card_is_3))
+                       (self.TheGame.cnt_hands < 40 or (self.TheGame.card_queue.n_count > 0 and not next_card_is_3))    
         for i in range(4):
             m_mask = self.TheGame.card_piles[i].try_collect_cards(self.TheGame.card_queue, False, self.TheGame.rule_priority, is_last_pile)
             for r in self.TheGame.rule_priority:
@@ -623,89 +766,155 @@ class Game():
                     best_p_idx, best_rule = (i, r)
                     break
             if best_p_idx is not None: break
+
+        # Main container for the options side-by-side
         options_container = Frame(dialog)
         options_container.pack(expand=True, fill=BOTH, padx=10, pady=10)
+
+        # Rule configurations: (rule_id, label, cards_logic)
         rules_meta_data = {
             1: ("3", lambda p: [p[-3], p[-2], p[-1]]),
             2: ("2", lambda p: [p[0], None, p[-2], p[-1]] if len(p) > 3 else [p[0], p[1], p[2]]),
             4: ("1", lambda p: [p[0], p[1], None, p[-1]] if len(p) > 3 else [p[0], p[1], p[2]])
         }
+        
+        # Build rules_config based on current priority
+        rules_config = []
         for r_id in self.TheGame.rule_priority:
-            if mask & r_id:
-                label_char, get_display_list = rules_meta_data[r_id]
-                is_rec = (best_p_idx == pile_idx and best_rule == r_id)
+            label, logic = rules_meta_data[r_id]
+            rules_config.append((r_id, label, logic))
+        
+        for rule_id, label_char, get_display_list in rules_config:
+            if mask & rule_id:
+                is_rec = (best_p_idx == pile_idx and best_rule == rule_id)
+
+                # Column for this option - Removed expand=True to keep width tight to content
                 opt_frame = Frame(options_container, bd=2, relief=GROOVE, bg="#dfd" if is_rec else "#f0f0f0")
                 opt_frame.pack(side=LEFT, padx=5, fill=Y)
-                btn_txt = f"Option {label_char}" + ("\n(Recommended)" if is_rec else "")
-                Button(opt_frame, text=btn_txt, command=lambda r=r_id: select(r),
-                       bg="#afa" if is_rec else "white", font=("Arial", 9, "bold")).pack(side=TOP, pady=5, fill=X)
+
+                btn_txt = f"Option {label_char}"
+                if is_rec: btn_txt += "\n(Recommended)"
+
+                Button(opt_frame, text=btn_txt, command=lambda r=rule_id: select(r),
+                       bg="#afa" if is_rec else "white", font=("Arial", 9, "bold")).pack(side=TOP, pady=5, fill=X)      
+
                 display_list = get_display_list(pile.rg_cards)
-                c_width, c_height = self.card_width + 10, self.card_height + (len(display_list) - 1) * self.height_gap + 10
-                canv = Canvas(opt_frame, width=c_width, height=c_height, bg="#dfd" if is_rec else "#f0f0f0", highlightthickness=0)
+
+                # Canvas for the vertical stack
+                c_width = self.card_width + 10
+                c_height = self.card_height + (len(display_list) - 1) * self.height_gap + 10
+
+                canv = Canvas(opt_frame, width=c_width, height=c_height, 
+                              bg="#dfd" if is_rec else "#f0f0f0", highlightthickness=0)
                 canv.pack(pady=10)
+
                 for i, card_val in enumerate(display_list):
                     img = self.card_img[card_val] if card_val is not None else self.backimg
                     canv.create_image(c_width//2, self.card_height//2 + i * self.height_gap + 5, image=img)
-                canv.bind("<Button-1>", lambda e, r=r_id: select(r))
+
+                # Make the stack clickable
+                canv.bind("<Button-1>", lambda e, r=rule_id: select(r))
+
+        # Bind numeric keys to the dialog
         dialog.bind("1", lambda e: select(4) if mask & 4 else None)
         dialog.bind("2", lambda e: select(2) if mask & 2 else None)
         dialog.bind("3", lambda e: select(1) if mask & 1 else None)
         dialog.bind("<Escape>", lambda e: dialog.destroy())
+
         self.center_window(dialog)
+
         return dialog
 
     def show_assistant_alert(self, missed_info):
+        """Creates a popup window alerting the user to missed combinations across all piles."""
         dialog = Toplevel(self.root)
         dialog.title("Assistant Alert")
         dialog.transient(self.root)
         dialog.grab_set()
-        Label(dialog, text="Missed Moves", font=("Arial", 12, "bold"), fg="red", pady=15).pack(side=TOP)
+
+        Label(dialog, text="Missed Moves", 
+              font=("Arial", 12, "bold"), fg="red", pady=15).pack(side=TOP)
+
+        # Main container
         main_frame = Frame(dialog)
         main_frame.pack(expand=True, fill=BOTH, padx=10, pady=10)
+        
+        # We'll use a simple frame instead of a scrollable canvas to allow auto-sizing to content
         content_frame = Frame(main_frame)
         content_frame.pack(side=TOP, fill=BOTH, expand=True)
+
         rules_meta_data = {
             1: ("3", lambda p: [p[-3], p[-2], p[-1]]),
             2: ("2", lambda p: [p[0], None, p[-2], p[-1]] if len(p) > 3 else [p[0], p[1], p[2]]),
             4: ("1", lambda p: [p[0], p[1], None, p[-1]] if len(p) > 3 else [p[0], p[1], p[2]])
         }
+
+        # Build rules_meta based on current priority
+        rules_meta = []
+        for r_id in self.TheGame.rule_priority:
+            label, logic = rules_meta_data[r_id]
+            rules_meta.append((r_id, label, logic))
+
         def select(p_idx, r_id):
+            self.TheGame.card_piles[p_idx].collect_rule(r_id, self.TheGame.card_queue)
+            self.render_cards()
             dialog.destroy()
-            self.animate_collection(p_idx, r_id, lambda: self.render_cards())
+
         for pile_idx, mask in missed_info:
             pile = self.TheGame.card_piles[pile_idx]
+
+            # Grouping by pile - Vertical packing for better visibility
             pile_frame = Frame(content_frame, bd=1, relief=SOLID, padx=5, pady=5)
             pile_frame.pack(side=TOP, pady=10, fill=X)
             Label(pile_frame, text=f"Pile {pile_idx}", font=("Arial", 10, "bold")).pack(side=LEFT, padx=5)
+
             rules_container = Frame(pile_frame)
             rules_container.pack(side=LEFT, expand=True, fill=X)
-            for r_id in self.TheGame.rule_priority:
-                if mask & r_id:
-                    label_char, get_display_list = rules_meta_data[r_id]
+
+            for rule_id, label_char, get_display_list in rules_meta:
+                if mask & rule_id:
                     opt_frame = Frame(rules_container, bd=1, relief=RIDGE, padx=5, pady=5)
                     opt_frame.pack(side=LEFT, padx=5)
-                    Button(opt_frame, text=f"Collect Rule {label_char}", command=lambda p=pile_idx, r=r_id: select(p, r), font=("Arial", 8)).pack(side=TOP, pady=2)
+
+                    Button(opt_frame, text=f"Collect Rule {label_char}", 
+                           command=lambda p=pile_idx, r=rule_id: select(p, r),
+                           font=("Arial", 8)).pack(side=TOP, pady=2)
+
                     display_list = get_display_list(pile.rg_cards)
-                    canv = Canvas(opt_frame, width=self.card_width + 10, height=self.card_height + (len(display_list)-1)*self.height_gap + 10, highlightthickness=0)
+
+                    # Canvas for the vertical stack
+                    canv = Canvas(opt_frame, width=self.card_width + 10, 
+                                  height=self.card_height + (len(display_list)-1)*self.height_gap + 10, 
+                                  highlightthickness=0)
                     canv.pack(pady=5)
+
                     for i, card_val in enumerate(display_list):
                         img = self.card_img[card_val] if card_val is not None else self.backimg
                         canv.create_image(self.card_width//2 + 5, self.card_height//2 + i * self.height_gap + 5, image=img)
-                    canv.bind("<Button-1>", lambda e, p=pile_idx, r=r_id: select(p, r))
+
+                    canv.bind("<Button-1>", lambda e, p=pile_idx, r=rule_id: select(p, r))
+
         Button(dialog, text="Cancel / Go Back", command=dialog.destroy, height=2, bg="#fbb").pack(side=BOTTOM, fill=X, padx=20, pady=10)
+
         self.center_window(dialog)
+
         return dialog
 
     def undo_button_clicked(self):
         self.TheGame.pop_stack_operations()
+        self.print_all_piles()
+        self.print_game_info()
         self.render_cards()
 
     def smart_undo_button_clicked(self):
+        """Undoes moves until a state with available moves is found."""
         self.root.config(cursor="watch")
         self.root.update()
+        
         try:
             rewound_count = 0
             while len(self.TheGame.rg_stack_operation) > 0:
+                # Check if current state has any moves
                 has_move = False
                 non_empty_piles = [p for p in self.TheGame.card_piles if not p.b_pile_empty]
                 next_card_is_3 = False
@@ -717,98 +926,251 @@ class Game():
                     if self.TheGame.card_piles[i].try_collect_cards(self.TheGame.card_queue, False, self.TheGame.rule_priority, is_last_pile) > 0:
                         has_move = True
                         break
-                if has_move: break
+
+                # Stop if we hit a state with moves
+                if has_move:
+                    break
+
+                # Pop and keep looking
                 self.TheGame.pop_stack_operations()
                 rewound_count += 1
+                self.check_and_report_win()
+
+            self.print_all_piles()
+            self.print_game_info()
             self.render_cards()
+
+            if rewound_count > 0:
+                print(f"Rewound {rewound_count} steps to a collectable state.")
+            else:
+                print("Moves are already available in the current state.")
+
         finally:
             self.root.config(cursor="")
 
-    def toggle_auto_check_option(self): self.b_auto_check = self.b_auto_check1.get()
-    def toggle_auto_play_option(self): self.b_auto_play = self.b_auto_play1.get()
-    def toggle_win_game_only_option(self): self.b_win_game_only = self.b_win_game_only1.get()
+    def toggle_auto_check_option(self):
+        self.b_auto_check = self.b_auto_check1.get()
+        self.print_options()
+
+    def toggle_auto_play_option(self):
+        self.b_auto_play = self.b_auto_play1.get()
+        self.print_options()
+
+    def toggle_win_game_only_option(self):
+        self.b_win_game_only = self.b_win_game_only1.get()
+        self.print_options()
+
     def toggle_peep_next_option(self):
         self.b_peep_next_in_queue = self.b_peep_next_in_queue1.get()
+        self.print_options()
         self.render_peep_card_in_queue(self.b_peep_next_in_queue)
+
     def toggle_display_short_pile_option(self):
         self.b_display_short_pile = self.b_display_short_pile1.get()
+        self.print_options()
         self.render_cards()
+
     def toggle_display_short_list_option(self):
         self.b_display_short_pile = self.b_display_short_pile1.get()
+        self.print_options()
         self.render_cards()
-    def toggle_display_detail_info_option(self): self.b_verbose = self.b_verbose1.get()
-    def set_rule_priority(self, priority): self.TheGame.rule_priority = priority
+
+    def toggle_display_detail_info_option(self):
+        self.b_verbose = self.b_verbose1.get()
+        self.print_options()
+
+    def set_rule_priority(self, priority):
+        """Updates the game's rule collection priority."""
+        self.TheGame.rule_priority = priority
+        if self.b_verbose:
+            print(f"Rule priority set to: {priority} ({self.rule_priority_var.get()})")
 
     def draw_card(self, card, x, y, image):
-        if card: self.canvas.delete(card)
+        if (card != None):
+            self.canvas.delete(card)
+
         card = self.canvas.create_image(x, y, image=image)
         self.canvas.addtag_withtag('image', card)
+
         return card
 
     def draw_label(self, label, x, y, w, h, text, background='white', text_color='#000'):
-        if label: self.canvas.delete(label)
-        self.canvas.create_rectangle(x, y, x + w, y + h, fill=background)
-        return self.canvas.create_text(x + w / 2, y + h / 2, text=text, fill=text_color)
+        if (label != None):
+            self.canvas.delete(label)
+
+        label_bottom = self.canvas.create_rectangle(
+            x,
+            y,
+            x + w,
+            y + h,
+            fill=background)
+
+        label = self.canvas.create_text(
+            x + w / 2,
+            y + h / 2,
+            text=text,
+            fill=text_color)
+
+        return label
 
     def render_peep_card_in_queue(self, b_peep_next_in_queue=True):
-        x1, y1 = (self.width_gap + self.card_width) * 4 + self.width_gap + self.card_width // 2, self.height_gap * 3 + self.card_height // 2
+        x1 = (self.width_gap + self.card_width) * 4 + \
+            self.width_gap + self.card_width // 2
+        y1 = self.height_gap * 3 + self.card_height // 2
+        
+        # Hide peep card if not enabled and not a win state
         if (self.b_peep_next_in_queue or self.TheGame.b_win) and len(self.TheGame.card_queue.rg_cards) > 0:
-            image = self.card_img[self.TheGame.card_queue.rg_cards[0]]
-            self.peep_next_label = self.draw_card(self.peep_next_label, x1, y1, image)
+            self.print_peep_next_in_queue()
+            card = self.TheGame.card_queue.rg_cards[0]
+            image = self.card_img[card]
+            self.peep_next_label = self.draw_card(
+                self.peep_next_label, x1, y1, image)
         else:
-            if self.peep_next_label: self.canvas.delete(self.peep_next_label)
+            # If we don't want to show it, clear the image from the canvas
+            if (self.peep_next_label != None):
+                self.canvas.delete(self.peep_next_label)
             self.peep_next_label = None
 
     def render_cards(self):
-        for card in self.card_check_boxes + self.undealt_check_boxes: self.canvas.delete(card)
+        for card in self.card_check_boxes:
+            self.canvas.delete(card)
         self.card_check_boxes.clear()
+        
+        for card in self.undealt_check_boxes:
+            self.canvas.delete(card)
         self.undealt_check_boxes.clear()
+
         for pile in range(4):
+            if self.b_verbose:
+                self.print_pile(pile)
+
             cards_in_deck = len(self.TheGame.card_piles[pile].rg_cards)
-            if self.label_piles[pile]: self.canvas.delete(self.label_piles[pile])
-            non_empty_piles = [p for p in self.TheGame.card_piles if not p.b_pile_empty]
-            next_card_is_3 = False
-            if self.TheGame.card_queue.n_count > 0:
-                if (int(self.TheGame.card_queue.rg_cards[0] / 4) + 1) == 3: next_card_is_3 = True
-            is_last_pile = len(non_empty_piles) == 1 and \
-                           (self.TheGame.cnt_hands < 40 or (self.TheGame.card_queue.n_count > 0 and not next_card_is_3))
-            mask = self.TheGame.card_piles[pile].try_collect_cards(self.TheGame.card_queue, False, self.TheGame.rule_priority, is_last_pile)
-            bg, fg = 'white', '#0F0'
-            if pile == self.TheGame.current_pile: bg, fg = 'yellow', '#F00'
-            elif mask > 0: bg, fg = '#ADD8E6', '#00F'
-            self.label_piles[pile] = self.draw_label(None, (self.width_gap + self.card_width) * pile + self.width_gap, self.height_gap, self.card_width, self.height_gap, str(cards_in_deck), background=bg, text_color=fg)
-            
-            if self.b_display_short_pile and cards_in_deck > self.TheGame.SHORT_PILE_MAX_DISPLAY:
-                # Show top 3, back, bottom 11
-                for i in range(self.TheGame.SHORT_PILE_MAX_DISPLAY):
-                    xx = (self.width_gap + self.card_width) * pile + self.width_gap
-                    yy = self.height_gap * (i+3)
-                    if i < self.TheGame.SHORT_PILE_TOP_COUNT:
-                        card_val = self.TheGame.card_piles[pile].rg_cards[i]
-                        image = self.card_img[card_val]
-                    elif i == self.TheGame.SHORT_PILE_TOP_COUNT:
-                        image = self.backimg
-                    else:
-                        card_val = self.TheGame.card_piles[pile].rg_cards[i + (cards_in_deck - self.TheGame.SHORT_PILE_MAX_DISPLAY)]
-                        image = self.card_img[card_val]
-                    self.card_check_boxes.append(self.draw_card(None, xx + self.card_width // 2, yy + self.card_height // 2, image))
+
+            if (self.label_piles[pile] != None):
+                self.canvas.delete(self.label_piles[pile])
+
+            mask = self.TheGame.card_piles[pile].try_collect_cards(self.TheGame.card_queue, False, self.TheGame.rule_priority)
+
+            if pile == self.TheGame.current_pile:
+                self.label_piles[pile] = self.draw_label(
+                    self.label_piles[pile],
+                    (self.width_gap + self.card_width) * pile + self.width_gap,
+                    self.height_gap,
+                    self.card_width,
+                    self.height_gap,
+                    str(cards_in_deck),
+                    background='yellow',
+                    text_color='#F00')
+            elif mask > 0:
+                # Highlight collectable piles that are not the current pile
+                self.label_piles[pile] = self.draw_label(
+                    self.label_piles[pile],
+                    (self.width_gap + self.card_width) * pile + self.width_gap,
+                    self.height_gap,
+                    self.card_width,
+                    self.height_gap,
+                    str(cards_in_deck),
+                    background='#ADD8E6', # Light Blue
+                    text_color='#00F')    # Blue
             else:
-                for i, card_val in enumerate(self.TheGame.card_piles[pile].rg_cards):
+                self.label_piles[pile] = self.draw_label(
+                    self.label_piles[pile],
+                    (self.width_gap + self.card_width) * pile + self.width_gap,
+                    self.height_gap,
+                    self.card_width,
+                    self.height_gap,
+                    str(cards_in_deck),
+                    background='white',
+                    text_color='#0F0')
+
+            if self.b_display_short_pile and cards_in_deck > self.TheGame.SHORT_PILE_MAX_DISPLAY:
+                # Top cards
+                for i in range(self.TheGame.SHORT_PILE_TOP_COUNT):
                     xx = (self.width_gap + self.card_width) * pile + self.width_gap
-                    yy = self.height_gap * (i+3)
-                    image = self.card_img[card_val]
-                    self.card_check_boxes.append(self.draw_card(None, xx + self.card_width // 2, yy + self.card_height // 2, image))
-        self.label_hands = self.draw_label(self.label_hands, (self.width_gap + self.card_width) * 4 + self.width_gap, self.height_gap, self.card_width, self.height_gap, str(self.TheGame.cnt_hands))
-        bx, h2 = (self.width_gap + self.card_width) * 4 + self.width_gap, self.height_gap * 2
-        self.label_queue = self.draw_label(self.label_queue, bx, self.window_height - h2 * 4 - self.height_gap - 24, self.card_width, self.height_gap, str(self.TheGame.card_queue.n_count))
+                    actual_idx = i
+                    x_offset, y_offset = (15, -15) if (pile == self.selected_pile and actual_idx in self.selected_indices) else (0, 0)
+                    yy = self.height_gap * (i + 3) + y_offset
+                    card = self.TheGame.card_piles[pile].rg_cards[actual_idx]
+                    self.card_check_boxes.append(self.draw_card(None, xx + x_offset + self.card_width // 2, yy + self.card_height // 2, self.card_img[card]))
+
+                # Gap indicator
+                xx = (self.width_gap + self.card_width) * pile + self.width_gap
+                yy = self.height_gap * (self.TheGame.SHORT_PILE_TOP_COUNT + 3)
+                self.card_check_boxes.append(self.draw_card(None, xx + self.card_width // 2, yy + self.card_height // 2, self.backimg))
+
+                # Bottom cards
+                for i in range(self.TheGame.SHORT_PILE_BOTTOM_COUNT):
+                    visual_idx = self.TheGame.SHORT_PILE_TOP_COUNT + 1 + i
+                    actual_idx = cards_in_deck - self.TheGame.SHORT_PILE_BOTTOM_COUNT + i
+                    xx = (self.width_gap + self.card_width) * pile + self.width_gap
+                    x_offset, y_offset = (15, -15) if (pile == self.selected_pile and actual_idx in self.selected_indices) else (0, 0)
+                    yy = self.height_gap * (visual_idx + 3) + y_offset
+                    card = self.TheGame.card_piles[pile].rg_cards[actual_idx]
+                    self.card_check_boxes.append(self.draw_card(None, xx + x_offset + self.card_width // 2, yy + self.card_height // 2, self.card_img[card]))
+
+            else:
+                for i, card in enumerate(self.TheGame.card_piles[pile].rg_cards):
+                    xx = (self.width_gap + self.card_width) * \
+                        pile + self.width_gap
+
+                    # Apply "Pop" offset if selected (45-degree up-right)
+                    x_offset = 0
+                    y_offset = 0
+                    if pile == self.selected_pile and i in self.selected_indices:
+                        x_offset = 15 # Pop right by 15 pixels
+                        y_offset = -15 # Pop up by 15 pixels
+
+                    yy = self.height_gap * (i+3) + y_offset
+                    x1 = xx + x_offset + self.card_width // 2
+                    y1 = yy + self.card_height // 2
+                    image = self.card_img[card]
+                    card_ctrl = self.draw_card(None, x1, y1, image)
+
+                    self.card_check_boxes.append(card_ctrl)
+
+        # draw hands count label
+        self.label_hands = self.draw_label(
+            self.label_hands,
+            (self.width_gap + self.card_width) * 4 + self.width_gap,
+            self.height_gap,
+            self.card_width,
+            self.height_gap,
+            str(self.TheGame.cnt_hands))
+
+        # draw card in queue label
+        bx = (self.width_gap + self.card_width) * 4 + self.width_gap
+        h2 = self.height_gap * 2
+        
+        self.label_queue = self.draw_label(
+            self.label_queue,
+            bx,
+            self.window_height - h2 * 4 - self.height_gap - 24,
+            self.card_width,
+            self.height_gap,
+            str(self.TheGame.card_queue.n_count))
+
+        # Debug Column: Undealt Reveal (Top 6, Bottom 6)
         dx = (self.width_gap + self.card_width) * 5 + self.width_gap
         total_undealt = len(self.TheGame.card_queue.rg_cards)
         if total_undealt > 0:
-            indices = [(j, True) for j in range(min(total_undealt, 12))] if total_undealt <= 12 else [(j, True) for j in range(6)] + [(6, False)] + [(j, True) for j in range(total_undealt - 6, total_undealt)]
+            if total_undealt <= 12:
+                indices = [(i, True) for i in range(total_undealt)]
+            else:
+                indices = [(i, True) for i in range(6)]
+                indices.append((6, False)) # Gap back
+                indices.extend([(i, True) for i in range(total_undealt - 6, total_undealt)])
+
             for idx, (deck_idx, reveal) in enumerate(indices):
-                image = self.card_img[self.TheGame.card_queue.rg_cards[deck_idx]] if reveal else self.backimg
-                self.undealt_check_boxes.append(self.draw_card(None, dx + self.card_width // 2, self.height_gap * (idx + 3) + self.card_height // 2, image))
-        self.render_peep_card_in_queue()
+                card_val = self.TheGame.card_queue.rg_cards[deck_idx]
+                image = self.card_img[card_val] if reveal else self.backimg
+                x1 = dx + self.card_width // 2
+                y1 = self.height_gap * (idx + 3) + self.card_height // 2
+                card_ctrl = self.draw_card(None, x1, y1, image)
+                self.undealt_check_boxes.append(card_ctrl)
+
+        # Show next card if win or peep option is on
+        self.render_peep_card_in_queue(self.b_peep_next_in_queue or self.TheGame.b_win)
+        
         self.root.update()
 
     def help_about(self): pass
