@@ -48,6 +48,9 @@ class MobileGameAdapter:
         self.peep_card_img: Optional[ft.Image] = None
         self.debug_queue_stack: Optional[ft.Stack] = None
         
+        self.deal_control: Optional[ft.Control] = None
+        self.queue_control: Optional[ft.Control] = None
+
         # Switches
         self.auto_switch: Optional[ft.Switch] = None
         self.winnable_switch: Optional[ft.Switch] = None
@@ -57,10 +60,16 @@ class MobileGameAdapter:
         self.tactile_switch: Optional[ft.Switch] = None
         self.priority_dropdown: Optional[ft.Dropdown] = None
 
+        self.undealt_stack: ft.Stack = ft.Stack(height=45, width=1000) # Width will be dynamic
+        self.undealt_queue_col: Optional[ft.Column] = None
+
         self.animation_overlay: ft.Stack = ft.Stack(expand=True)
 
         self.selected_indices: List[int] = []
         self.selected_pile: int = -1
+
+        self.hidden_pile: int = -1
+        self.hidden_indices: List[int] = []
 
         self.debug_col: Optional[ft.Column] = None
         self.TheGame: GameInfo = GameInfo(self, None)
@@ -97,28 +106,27 @@ class MobileGameAdapter:
         print(f"[LOG] {msg}")
 
     async def animate_collection(self, pile_idx: int, card_values: List[int], card_indices: List[int]) -> None:
-        """Animates cards flying from a pile to the queue."""
-        # Clear selection state as we start moving
+        """Animates cards flying from a pile to the DEAL control."""
+        # 1. Establish hiding state
         self.selected_indices = []
         self.selected_pile = -1
+        self.hidden_pile = pile_idx
+        self.hidden_indices = card_indices
+        
+        # Force a render to make the real cards disappear from the pile
+        await self.render_cards()
 
         p_obj = self.TheGame.card_piles[pile_idx]
         n = p_obj.n_card_count
         
-        # Coordinates based on the layout in main()
-        # Page padding: 5, Pile Width: 81, Pile Spacing: 5
-        start_x = 5 + pile_idx * (81 + 5)
-        # Offset: 5 (padding) + Header (45) + TopMargin (10) = 60
-        start_y_offset = 60
-        
-        # Queue position (centered in controls_col)
-        # Piles(339) + Spacing(5) + PagePadding(5) = 349
-        dest_x = 349
-        dest_y = 285 
+        # Manual coordinates (centered content assumed)
+        base_x = 10 + pile_idx * 76 + 2
+        base_y = 62
+        dest_x = 329
+        dest_y = 210
         
         anim_cards = []
         for i, idx in enumerate(card_indices):
-            # Calculate start Y based on short-pile logic
             if n <= self.TheGame.SHORT_PILE_MAX_DISPLAY:
                 display_idx = idx
             else:
@@ -127,68 +135,85 @@ class MobileGameAdapter:
                 elif idx >= n - self.TheGame.SHORT_PILE_BOTTOM_COUNT:
                     display_idx = idx - (n - self.TheGame.SHORT_PILE_MAX_DISPLAY)
                 else:
-                    display_idx = self.TheGame.SHORT_PILE_TOP_COUNT # Hidden zone indicator position
+                    display_idx = self.TheGame.SHORT_PILE_TOP_COUNT
             
-            start_y = start_y_offset + display_idx * 22
+            s_y = base_y + display_idx * 30
                 
+            # Start at EXACT pile position
             card_img = ft.Image(
                 src=get_card_image_path(card_values[i]),
                 width=71, height=96,
-                left=start_x,
-                top=start_y,
-                animate_position=ft.Animation(600, ft.AnimationCurve.EASE_IN_OUT),
-                animate_opacity=ft.Animation(600, ft.AnimationCurve.EASE_IN_OUT),
+                left=base_x,
+                top=s_y,
+                opacity=1,
             )
             anim_cards.append(card_img)
             self.animation_overlay.controls.append(card_img)
             
         self.animation_overlay.update()
-        await asyncio.sleep(0.05)
         
+        # 2. Pop Animation (Jump up-right)
+        await asyncio.sleep(0.1)
         for card in anim_cards:
+            card.animate_position = ft.Animation(250, ft.AnimationCurve.EASE_OUT)
+            card.left += 12
+            card.top -= 12
+        self.animation_overlay.update()
+        
+        # 3. Pause while cards are in the "popped" position
+        await asyncio.sleep(0.4)
+        
+        # 4. Trigger movement to DEAL control
+        for card in anim_cards:
+            card.animate_position = ft.Animation(800, ft.AnimationCurve.EASE_IN_OUT)
+            card.animate_opacity = ft.Animation(800, ft.AnimationCurve.EASE_IN_OUT)
             card.left = dest_x
             card.top = dest_y
             card.opacity = 0
             
         self.animation_overlay.update()
-        await asyncio.sleep(0.6)
+        await asyncio.sleep(0.9)
         
+        # 5. Cleanup
         self.animation_overlay.controls.clear()
         self.animation_overlay.update()
+        self.hidden_pile = -1
+        self.hidden_indices = []
 
     async def animate_deal(self, pile_idx: int, card_value: int) -> None:
-        """Animates a card flying from the queue label to a pile."""
-        start_x = 349
-        start_y = 285
+        """Animates a card flying from the DEAL control to a pile."""
+        start_x = 329
+        start_y = 210
         
-        # dest_x based on 81px pile width
-        dest_x = 5 + pile_idx * (81 + 5)
+        dest_x = 10 + pile_idx * 76 + 2
         p_obj = self.TheGame.card_piles[pile_idx]
         n = p_obj.n_card_count
         display_idx = min(n, self.TheGame.SHORT_PILE_MAX_DISPLAY - 1)
-        # Offset: 5 (padding) + Header (45) + TopMargin (10) = 60
-        dest_y = 60 + display_idx * 22
+        dest_y = 62 + display_idx * 30
         
+        # 1. Create card at DEAL position, fully visible
         card_img = ft.Image(
             src=get_card_image_path(card_value),
             width=71, height=96,
             left=start_x,
             top=start_y,
-            opacity=0,
-            animate_position=ft.Animation(400, ft.AnimationCurve.EASE_OUT),
-            animate_opacity=ft.Animation(400, ft.AnimationCurve.EASE_OUT),
+            opacity=1,
         )
         
         self.animation_overlay.controls.append(card_img)
         self.animation_overlay.update()
-        await asyncio.sleep(0.02)
         
+        # 2. Anchor wait
+        await asyncio.sleep(0.2)
+        
+        # 3. Trigger movement
+        card_img.animate_position = ft.Animation(600, ft.AnimationCurve.EASE_IN_OUT)
         card_img.left = dest_x
         card_img.top = dest_y
-        card_img.opacity = 1
         self.animation_overlay.update()
         
-        await asyncio.sleep(0.4)
+        # 4. Finishing wait
+        await asyncio.sleep(0.7)
         self.animation_overlay.controls.remove(card_img)
         self.animation_overlay.update()
 
@@ -221,32 +246,41 @@ class MobileGameAdapter:
                 else:
                     if p_obj.n_card_count <= self.TheGame.SHORT_PILE_MAX_DISPLAY:
                         for idx, val in enumerate(p_obj.rg_cards):
+                            # Skip if card is currently being animated
+                            if i == self.hidden_pile and idx in self.hidden_indices:
+                                continue
                             x_off, y_off = (10, -10) if i == self.selected_pile and idx in self.selected_indices else (0, 0)
                             new_controls.append(
                                 ft.Image(
                                     src=get_card_image_path(val),
                                     width=71, height=96,
-                                    fit="contain", top=10 + idx * 22 + y_off,
+                                    fit="contain", top=10 + idx * 30 + y_off,
                                     left=x_off
                                 )
                             )
                     else:
-                        # Top cards (e.g., 3)
+                        # Top cards (e.g., 2)
                         for idx in range(self.TheGame.SHORT_PILE_TOP_COUNT):
+                            # Skip if hidden
+                            if i == self.hidden_pile and idx in self.hidden_indices:
+                                continue
                             val = p_obj.rg_cards[idx]
                             x_off, y_off = (10, -10) if i == self.selected_pile and idx in self.selected_indices else (0, 0)
-                            new_controls.append(ft.Image(src=get_card_image_path(val), width=71, height=96, fit="contain", top=10 + idx * 22 + y_off, left=x_off))
+                            new_controls.append(ft.Image(src=get_card_image_path(val), width=71, height=96, fit="contain", top=10 + idx * 30 + y_off, left=x_off))
                         
                         # Gap indicator (at index SHORT_PILE_TOP_COUNT)
-                        new_controls.append(ft.Image(src=get_back_image_path(), width=71, height=96, fit="contain", top=10 + self.TheGame.SHORT_PILE_TOP_COUNT * 22))
+                        new_controls.append(ft.Image(src=get_back_image_path(), width=71, height=96, fit="contain", top=10 + self.TheGame.SHORT_PILE_TOP_COUNT * 30))
                         
-                        # Bottom cards (e.g., 11)
+                        # Bottom cards (e.g., 3)
                         for b_idx in range(self.TheGame.SHORT_PILE_BOTTOM_COUNT):
                             visual_idx = self.TheGame.SHORT_PILE_TOP_COUNT + 1 + b_idx
                             actual_idx = p_obj.n_card_count - self.TheGame.SHORT_PILE_BOTTOM_COUNT + b_idx
+                            # Skip if hidden
+                            if i == self.hidden_pile and actual_idx in self.hidden_indices:
+                                continue
                             val = p_obj.rg_cards[actual_idx]
                             x_off, y_off = (10, -10) if i == self.selected_pile and actual_idx in self.selected_indices else (0, 0)
-                            new_controls.append(ft.Image(src=get_card_image_path(val), width=71, height=96, fit="contain", top=10 + visual_idx * 22 + y_off, left=x_off))
+                            new_controls.append(ft.Image(src=get_card_image_path(val), width=71, height=96, fit="contain", top=10 + visual_idx * 30 + y_off, left=x_off))
                 
                 stack.controls = new_controls
 
@@ -310,8 +344,17 @@ class MobileGameAdapter:
                     for idx, (deck_idx, reveal) in enumerate(indices):
                         card_val = self.TheGame.card_queue.rg_cards[deck_idx]
                         img_path = get_card_image_path(card_val) if reveal else get_back_image_path()
-                        debug_controls.append(ft.Image(src=img_path, width=71, height=96, fit="contain", top=idx * 22))
+                        debug_controls.append(ft.Image(src=img_path, width=71, height=96, fit="contain", top=idx * 30))
                 self.debug_queue_stack.controls = debug_controls
+
+            # Update Horizontal Undealt Queue at the bottom (Overlapping Stack)
+            n_undealt = len(self.TheGame.card_queue.rg_cards)
+            self.undealt_stack.controls = [
+                ft.Image(src=get_card_image_path(val), width=30, height=40, fit="contain", left=idx * 8)
+                for idx, val in enumerate(self.TheGame.card_queue.rg_cards)
+            ]
+            # Ensure the stack has enough width to be scrollable
+            self.undealt_stack.width = (n_undealt * 8) + 30 if n_undealt > 0 else 10
 
             self.page.update()
         except Exception as e:
@@ -340,14 +383,8 @@ class MobileGameAdapter:
         self.log(f"Priority changed to: {self.TheGame.rule_priority}")
 
     async def toggle_debug(self, e: ft.ControlEvent) -> None:
-        if self.debug_col:
-            self.debug_col.visible = e.control.value
-            if self.debug_col.visible:
-                # Usable width 425 + gap 5 + controls 71 = 501. Outer: 517
-                self.page.window.width = 517
-            else:
-                # Usable width 425. Outer: 441
-                self.page.window.width = 441
+        if self.undealt_queue_col:
+            self.undealt_queue_col.visible = e.control.value
             self.page.update()
 
     async def toggle_tactile(self, e: ft.ControlEvent) -> None:
@@ -481,7 +518,7 @@ class MobileGameAdapter:
         # Challenge Rule: ONLY allowed at the current dealing pile
         if idx != self.TheGame.current_pile:
             if self.status_text:
-                self.status_text.value = f"Wait! Click P{self.TheGame.current_pile} or Deal."
+                self.status_text.value = f"Wait! Click P{self.TheGame.current_pile + 1} or Deal."
                 self.status_text.color = ft.Colors.RED_400
             self.page.update()
             return
@@ -503,7 +540,7 @@ class MobileGameAdapter:
             await self.show_collection_dialog(collectable, idx)
         else:
             if self.status_text:
-                self.status_text.value = f"No moves available for P{idx}"
+                self.status_text.value = f"No moves available for P{idx + 1}"
                 self.status_text.color = ft.Colors.RED_400
             self.page.update()
 
@@ -521,7 +558,7 @@ class MobileGameAdapter:
         y_cards = local_y - 45
         if y_cards < 0: return # Clicked on header area
 
-        visual_idx = int(y_cards / 22)
+        visual_idx = int(y_cards / 30)
         pile_len = len(self.TheGame.card_piles[pile_idx].rg_cards)
         
         if pile_len > self.TheGame.SHORT_PILE_MAX_DISPLAY:
@@ -564,9 +601,15 @@ class MobileGameAdapter:
         elif sel == [pile_len-3, pile_len-2, pile_len-1]: matched_rule = 1
         
         if matched_rule:
+            # Perform animation for tactile collection
+            c_vals = [pile.rg_cards[i] for i in sel]
+            await self.animate_collection(pile_idx, c_vals, sel)
+            
+            # Apply logic
             pile.collect_rule(matched_rule, self.TheGame.card_queue)
             self.selected_indices = []
             self.selected_pile = -1
+            await self.render_cards()
             await self.check_end()
         else:
             self.selected_indices = []
@@ -604,7 +647,7 @@ class MobileGameAdapter:
             if success:
                 print(f"DEBUG: Collection successful for {l}")
                 if self.status_text:
-                    self.status_text.value = f"Collected {l} from P{pile_idx}"
+                    self.status_text.value = f"Collected {l} from P{pile_idx + 1}"
                     self.status_text.color = ft.Colors.GREEN_400
             else:
                 print(f"DEBUG: Collection logic returned False for {l}")
@@ -635,11 +678,18 @@ class MobileGameAdapter:
                     print(f"DEBUG: Adding option {label} for P{pile_idx}")
                     is_rec = (r_id == recommended_rule)
                     card_values = [p_obj.rg_cards[i] for i in idxs]
+
+                    preview_stack = ft.Stack(height=150, width=71)
+                    # Logic to insert gap indicator if indices are not consecutive
+                    display_elements = []
+                    for j in range(len(idxs)):
+                        display_elements.append(("card", card_values[j]))
+                        if j < len(idxs) - 1 and idxs[j+1] > idxs[j] + 1:
+                            display_elements.append(("gap", None))
                     
-                    preview_stack = ft.Stack(height=140, width=71)
-                    for i, val in enumerate(card_values):
-                        preview_stack.controls.append(ft.Image(src=get_card_image_path(val), width=71, height=96, top=i*22))
-                    
+                    for idx, (el_type, val) in enumerate(display_elements):
+                        img_path = get_card_image_path(val) if el_type == "card" else get_back_image_path()
+                        preview_stack.controls.append(ft.Image(src=img_path, width=71, height=96, top=idx*15))                    
                     # Direct async handler
                     async def on_select_click(e, rid=r_id, ind=idxs, lab=label, p_id=pile_idx):
                         print(f"DEBUG: UI Clicked {lab} for P{p_id}")
@@ -665,7 +715,7 @@ class MobileGameAdapter:
 
             print("DEBUG: Creating AlertDialog object")
             dlg = ft.AlertDialog(
-                title=ft.Text(f"P{pile_idx} Options", size=10, weight="bold"),
+                title=ft.Text(f"P{pile_idx + 1} Options", size=10, weight="bold"),
                 content=ft.Row(options, spacing=3, tight=True, vertical_alignment="start"),
                 actions=[ft.TextButton("Cancel", on_click=close_dlg)],
                 actions_alignment=ft.MainAxisAlignment.END,
@@ -700,7 +750,7 @@ class MobileGameAdapter:
 
             for i in range(4):
                 if self.TheGame.card_piles[i].try_collect_cards(self.TheGame.card_queue, False, self.TheGame.rule_priority, is_last_pile) > 0:
-                    piles_with_moves.append(str(i))
+                    piles_with_moves.append(str(i + 1))
             if piles_with_moves:
                 if self.status_text:
                     self.status_text.value = f"Collect moves in Pile {', '.join(piles_with_moves)}!"
@@ -795,14 +845,10 @@ class MobileGameAdapter:
 async def main(page: ft.Page) -> None:
     page.title = "91929"
     
-    # Target Usable: 425 -> Set Outer: 441
+    # Desktop window size settings (will be ignored by mobile browser)
     page.window.width = 441
-    page.window.height = 820 
-    
-    page.window.min_width = 441
-    page.window.min_height = 820
     page.window.maximized = False
-    page.window.resizable = False
+    page.window.resizable = True
     
     # Force update and wait
     page.update()
@@ -819,25 +865,24 @@ async def main(page: ft.Page) -> None:
     print(f"DEBUG: Final Window Width (Outer): {page.window.width}")
     
     page.bgcolor = "#336699"
-    page.padding = 5
+    page.padding = 10
     ad = MobileGameAdapter(page)
     
-    def label_container(content, width=71):
+    def label_container(content, width=75):
         return ft.Container(content=content, alignment=ft.Alignment(0, 0), width=width, height=30, bgcolor="white", border=ft.Border.all(1, "black"))
 
     # UI Components
-    ad.hands_text = ft.Text("0", size=18, weight="bold", color="black", text_align=ft.TextAlign.CENTER)
-    ad.queue_text = ft.Text("40", size=18, weight="bold", color="black", text_align=ft.TextAlign.CENTER)
+    ad.hands_text = ft.Text("0", size=16, weight="bold", color="black", text_align=ft.TextAlign.CENTER)
+    ad.queue_text = ft.Text("40", size=16, weight="bold", color="black", text_align=ft.TextAlign.CENTER)
     ad.status_text = ft.Text("", size=14, weight="bold", color="white")
-    ad.peep_card_img = ft.Image(src="images/b.gif", width=71, height=96, fit="contain")
+    ad.peep_card_img = ft.Image(src="images/b.gif", width=60, height=82, fit="contain")
 
-    # Piles Layout
-    piles_row = ft.Row(spacing=5, alignment=ft.MainAxisAlignment.START)
+    # Piles Layout - Optimized for Side-by-Side with Info
+    piles_row = ft.Row(spacing=4, alignment=ft.MainAxisAlignment.START)
     for i in range(4):
-        # Stack width increased to 81 to accommodate 10px pop offset
-        stack = ft.Stack(height=450, width=81)
-        header = ft.Text("0", size=18, weight="bold")
-        l_cont = label_container(header, width=71)
+        stack = ft.Stack(height=280, width=72) # Increased to 280 for 30px gap
+        header = ft.Text("0", size=15, weight="bold")
+        l_cont = label_container(header, width=65)
         ad.pile_stacks.append(stack)
         ad.pile_headers.append(header)
         ad.pile_containers.append(l_cont)
@@ -852,76 +897,103 @@ async def main(page: ft.Page) -> None:
             ft.GestureDetector(
                 content=ft.Container(
                     content=ft.Column([
-                        ft.Text(f"P{i+1}", size=9, weight="bold", color="white"),
+                        ft.Text(f"P{i+1}", size=8, weight="bold", color="white"),
                         l_cont,
                         stack
-                    ], spacing=2, horizontal_alignment=ft.CrossAxisAlignment.START),
+                    ], spacing=2, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
                 ),
                 on_tap_down=make_on_tap_down(i)
             )
         )
 
-    # Controls
-    controls_col = ft.Column([
-        ft.Text("HANDS", size=9, weight="bold", color="white"),
-        label_container(ad.hands_text, width=71),
-        ft.Container(height=5),
-        ft.Text("NEXT", size=9, weight="bold", color="white"),
-        ft.Container(content=ad.peep_card_img, height=96, width=71, alignment=ft.Alignment(0, 0)),
-        ft.Container(height=5),
-        ft.Text("QUEUE", size=9, weight="bold", color="white"),
-        label_container(ad.queue_text, width=71),
-        ft.Text("COLLECT", size=9, weight="bold", color="white"),
-        ft.Button("COLLECT", on_click=ad.collect_clicked, width=71, bgcolor="white", color="black", style=ft.ButtonStyle(padding=0, shape=ft.RoundedRectangleBorder(radius=2))),
-        ft.Text("DEAL", size=9, weight="bold", color="white"),
-        ft.Container(content=ft.Image(src="images/b.gif", width=71, height=96, fit="contain"), on_click=ad.deal_clicked, padding=2, border=ft.Border.all(1, "white"), border_radius=5),
-        ft.Button("REWIND", on_click=ad.rewind_clicked, width=71, bgcolor="white", color="black", style=ft.ButtonStyle(padding=0, shape=ft.RoundedRectangleBorder(radius=2))),
-        ft.Button("Undo", on_click=ad.undo_clicked, width=71, bgcolor="white", color="black", style=ft.ButtonStyle(padding=0, shape=ft.RoundedRectangleBorder(radius=2))),
-        ft.Button("New", on_click=ad.restart_clicked, width=71, bgcolor="white", color="black", style=ft.ButtonStyle(padding=0, shape=ft.RoundedRectangleBorder(radius=2))),
-        ft.Button("Replay", on_click=ad.replay_clicked, width=71, bgcolor="white", color="black", style=ft.ButtonStyle(padding=0, shape=ft.RoundedRectangleBorder(radius=2))),
-        ft.Button("Load", on_click=ad.on_load_btn, width=71, bgcolor="white", color="black", style=ft.ButtonStyle(padding=0, shape=ft.RoundedRectangleBorder(radius=2))),
-        ft.Button("Save", on_click=ad.on_save_btn, width=71, bgcolor="white", color="black", style=ft.ButtonStyle(padding=0, shape=ft.RoundedRectangleBorder(radius=2))),
-    ], spacing=2, horizontal_alignment=ft.CrossAxisAlignment.CENTER, width=71)
+    # Info Column (Vertical, to be placed on the right of piles)
+    ad.queue_control = label_container(ad.queue_text, 55)
+    ad.deal_control = ft.Container(ft.Image(src="images/b.gif", width=42, height=60), on_click=ad.deal_clicked, border=ft.Border.all(1, "white"), border_radius=3)
 
-    ad.debug_queue_stack = ft.Stack(height=450, width=71)
-    debug_col = ft.Column([ft.Text("UNDEALT", size=9, weight="bold", color="white"), ft.Container(content=ad.debug_queue_stack, padding=ft.Padding.only(top=32))], spacing=2, horizontal_alignment=ft.CrossAxisAlignment.CENTER, visible=False)
+    info_column = ft.Column([
+        ft.Column([ft.Text("HANDS", size=9, color="white"), label_container(ad.hands_text, 55)], horizontal_alignment="center", spacing=1),
+        ft.Column([ft.Text("NEXT", size=9, color="white"), ft.Container(ad.peep_card_img, height=60, width=42)], horizontal_alignment="center", spacing=1),
+        ft.Column([ft.Text("QUEUE", size=9, color="white"), ad.queue_control], horizontal_alignment="center", spacing=1),
+        ft.Column([ft.Text("DEAL", size=9, color="white"), ad.deal_control], horizontal_alignment="center", spacing=1),
+    ], spacing=10, horizontal_alignment="center", width=60)
+
+    # Action Buttons Grid - Optimized to 3x2
+    def action_button(text, icon, on_click, color="white"):
+        return ft.ElevatedButton(
+            content=ft.Row([ft.Icon(icon, size=16), ft.Text(text, size=12)], alignment="center", spacing=5),
+            on_click=on_click,
+            bgcolor=color,
+            color="black",
+            style=ft.ButtonStyle(padding=5, shape=ft.RoundedRectangleBorder(radius=5)),
+            expand=True
+        )
+
+    actions_grid = ft.Column([
+        ft.Row([
+            action_button("New", ft.Icons.ADD, ad.restart_clicked, "white"),
+            action_button("Undo", ft.Icons.UNDO, ad.undo_clicked, "white"),
+            action_button("Load", ft.Icons.FOLDER_OPEN, ad.on_load_btn, "white"),
+        ], spacing=5),
+        ft.Row([
+            action_button("Replay", ft.Icons.REFRESH, ad.replay_clicked, "white"),
+            action_button("Rewind", ft.Icons.REPLAY, ad.rewind_clicked, "white"),
+            action_button("Save", ft.Icons.SAVE, ad.on_save_btn, "white"),
+        ], spacing=5),
+    ], spacing=10)
+
+    ad.debug_queue_stack = ft.Stack(height=300, width=60)
+    debug_col = ft.Column([ft.Text("UNDEALT", size=9, weight="bold", color="white"), ft.Container(content=ad.debug_queue_stack, padding=ft.Padding.only(top=20))], spacing=2, horizontal_alignment=ft.CrossAxisAlignment.CENTER, visible=False)
     ad.debug_col = debug_col
 
-    ad.auto_switch = ft.Switch(label="Auto Play", on_change=ad.toggle_auto_play, label_position=ft.LabelPosition.RIGHT)
-    ad.peep_switch = ft.Switch(label="Peep Next", on_change=ad.toggle_peep, label_position=ft.LabelPosition.RIGHT)
+    ad.auto_switch = ft.Switch(label="Auto", on_change=ad.toggle_auto_play, label_position=ft.LabelPosition.RIGHT)
+    ad.peep_switch = ft.Switch(label="Peep", on_change=ad.toggle_peep, label_position=ft.LabelPosition.RIGHT)
     ad.tactile_switch = ft.Switch(label="Tactile", value=True, on_change=ad.toggle_tactile, label_position=ft.LabelPosition.RIGHT)
     ad.winnable_switch = ft.Switch(label="Win Only", on_change=ad.toggle_winnable, label_position=ft.LabelPosition.RIGHT)
-    ad.assistant_switch = ft.Switch(label="Assistant", value=False, on_change=ad.toggle_assistant, label_position=ft.LabelPosition.RIGHT)
-    ad.debug_switch = ft.Switch(label="Debug", value=False, on_change=ad.toggle_debug, label_position=ft.LabelPosition.RIGHT)
+    ad.assistant_switch = ft.Switch(label="Assistant", on_change=ad.toggle_assistant, label_position=ft.LabelPosition.RIGHT)
+    ad.debug_switch = ft.Switch(label="Debug", on_change=ad.toggle_debug, label_position=ft.LabelPosition.RIGHT)
     
-    ad.priority_dropdown = ft.Dropdown(
-        label="Priority",
-        value="123",
-        options=[
-            ft.dropdown.Option("123", "1 > 2 > 3"),
-            ft.dropdown.Option("321", "3 > 2 > 1"),
-        ],
-        on_select=ad.handle_priority_change,
-        width=120,
-        height=45,
-        text_size=12,
-        label_style=ft.TextStyle(size=10),
-    )
+    options_grid = ft.Column([
+        ft.Row([ft.Container(content=s, theme_mode=ft.ThemeMode.DARK) for s in [ad.auto_switch, ad.peep_switch, ad.winnable_switch]], alignment="center", spacing=5),
+        ft.Row([ft.Container(content=s, theme_mode=ft.ThemeMode.DARK) for s in [ad.assistant_switch, ad.tactile_switch, ad.debug_switch]], alignment="center", spacing=5),
+    ], spacing=5)
 
-    options_row_1 = ft.Row([ft.Container(content=s, theme_mode=ft.ThemeMode.DARK) for s in [ad.auto_switch, ad.peep_switch, ad.tactile_switch]], alignment="center", spacing=10)
-    options_row_2 = ft.Row([ft.Container(content=s, theme_mode=ft.ThemeMode.DARK) for s in [ad.winnable_switch, ad.assistant_switch, ad.debug_switch]], alignment="center", spacing=10)
-    options_row_3 = ft.Row([ad.priority_dropdown], alignment="center")
+    # Horizontal Undealt Queue (Overlapping) - Controlled by Debug
+    ad.undealt_queue_col = ft.Container(
+        content=ft.Column([
+            ft.Text("UNDEALT QUEUE", size=9, weight="bold", color="white60"),
+            ft.Row([ad.undealt_stack], scroll=ft.ScrollMode.AUTO, height=45)
+        ], spacing=2),
+        width=370,
+        visible=False
+    )
 
     page.add(
         ft.Stack([
             ft.Column([
-                ft.Row([piles_row, controls_col, debug_col], alignment="start", vertical_alignment="start", spacing=5),
-                ft.Divider(color="transparent", height=5),
-                options_row_1,
-                options_row_2,
-                options_row_3,
-                ft.Container(content=ad.status_text, alignment=ft.Alignment(0, 0))
-            ], expand=True),
+                # Main Play Area: Piles and Info side-by-side
+                ft.Container(
+                    content=ft.Row([
+                        piles_row,
+                        info_column
+                    ], alignment=ft.MainAxisAlignment.CENTER, vertical_alignment="start", spacing=10),
+                    padding=ft.padding.only(top=10, bottom=10),
+                    alignment=ft.Alignment(0, 0)
+                ),
+                
+                # Bottom Controls Area
+                ft.Container(
+                    content=ft.Column([
+                        actions_grid,
+                        options_grid,
+                        ft.Container(content=ad.status_text, alignment=ft.Alignment(0, 0), height=30),
+                        ad.undealt_queue_col
+                    ], spacing=10, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+                    padding=15,
+                    bgcolor="#224466",
+                    border_radius=ft.border_radius.only(top_left=25, top_right=25),
+                    alignment=ft.Alignment(0, 0)
+                )
+            ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=0),
             ad.animation_overlay
         ], expand=True)
     )

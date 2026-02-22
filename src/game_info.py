@@ -43,8 +43,8 @@ from cards import Cards
 
 class GameInfo:
     # Constants for Short Pile display (Shared by all UIs)
-    SHORT_PILE_TOP_COUNT = 3
-    SHORT_PILE_BOTTOM_COUNT = 11
+    SHORT_PILE_TOP_COUNT = 2
+    SHORT_PILE_BOTTOM_COUNT = 3
     # Max display height includes Top + Gap (1) + Bottom
     SHORT_PILE_MAX_DISPLAY = SHORT_PILE_TOP_COUNT + 1 + SHORT_PILE_BOTTOM_COUNT
 
